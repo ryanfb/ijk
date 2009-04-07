@@ -33,6 +33,9 @@
 
 namespace IJKTABLE {
 
+  typedef unsigned char u_char;
+  typedef unsigned long u_long;
+  typedef unsigned int u_int;
   typedef u_char ISOSURFACE_VERTEX_INDEX;
   typedef u_char EDGE_INDEX;
   typedef u_char FACET_INDEX;
