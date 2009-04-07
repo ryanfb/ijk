@@ -1518,7 +1518,7 @@ namespace IJKGRID {
   // **************************************************
 
   template <class DTYPE, class ATYPE, class VTYPE> 
-  GRID<DTYPE,ATYPE,VTYPE>::GRID<DTYPE,ATYPE,VTYPE>
+  GRID<DTYPE,ATYPE,VTYPE>::GRID
   (const DTYPE dimension, const ATYPE * axis_size)
   // constructor
   {
@@ -1575,7 +1575,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE> 
   GRID<DTYPE,ATYPE,VTYPE>::
-  GRID<DTYPE,ATYPE,VTYPE>(const GRID<DTYPE,ATYPE,VTYPE> & grid)
+  GRID(const GRID<DTYPE,ATYPE,VTYPE> & grid)
   // copy constructor
   {
     Init(grid.Dimension(), grid.AxisSize());
@@ -1720,7 +1720,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
   SCALAR_GRID<DTYPE,ATYPE,VTYPE,STYPE>::
-  SCALAR_GRID<DTYPE,ATYPE,VTYPE,STYPE>():
+  SCALAR_GRID():
     SCALAR_GRID_BASE <DTYPE,ATYPE,VTYPE,STYPE> (0, NULL)
   // constructor
   {
@@ -1729,7 +1729,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
   SCALAR_GRID<DTYPE,ATYPE,VTYPE,STYPE>::
-  SCALAR_GRID<DTYPE,ATYPE,VTYPE,STYPE>
+  SCALAR_GRID
   (const DTYPE dimension, const ATYPE * axis_size) :
     SCALAR_GRID_BASE <DTYPE,ATYPE,VTYPE,STYPE> (dimension, axis_size)
   // constructor
@@ -1819,7 +1819,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
   SCALAR_GRID_WRAPPER<DTYPE,ATYPE,VTYPE,STYPE>::
-  SCALAR_GRID_WRAPPER<DTYPE,ATYPE,VTYPE,STYPE>
+  SCALAR_GRID_WRAPPER
   (const DTYPE dimension, const ATYPE * axis_size, STYPE * scalar):
     SCALAR_GRID_BASE<DTYPE,ATYPE,VTYPE,STYPE>(dimension, axis_size)
   { this->scalar = scalar; };
@@ -1829,7 +1829,7 @@ namespace IJKGRID {
   // **************************************************
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
-  MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>::MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>()
+  MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>::MINMAX_BASE()
   // constructor
   {
     scalar_min = NULL;
@@ -1837,7 +1837,7 @@ namespace IJKGRID {
   }
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
-  MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>::MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>
+  MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>::MINMAX_BASE
   (const DTYPE dimension, const ATYPE * axis_size) :
     GRID<DTYPE,ATYPE,VTYPE>(dimension, axis_size)
   // constructor
@@ -2122,7 +2122,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
   MINMAX_REGIONS<DTYPE,ATYPE,VTYPE,STYPE>::
-  MINMAX_REGIONS<DTYPE,ATYPE,VTYPE,STYPE>()
+  MINMAX_REGIONS()
   // constructor
   {
     region_edge_length = 0;
@@ -2130,7 +2130,7 @@ namespace IJKGRID {
 
   template <class DTYPE, class ATYPE, class VTYPE, class STYPE>
   MINMAX_REGIONS<DTYPE,ATYPE,VTYPE,STYPE>::
-  MINMAX_REGIONS<DTYPE,ATYPE,VTYPE,STYPE>
+  MINMAX_REGIONS
   (const DTYPE dimension, const ATYPE * axis_size, 
    const ATYPE region_edge_length) :
     MINMAX_BASE<DTYPE,ATYPE,VTYPE,STYPE>(dimension, axis_size)
