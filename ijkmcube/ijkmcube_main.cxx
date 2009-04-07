@@ -22,6 +22,7 @@
 */
 
 #include <time.h>
+#include <assert.h>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
