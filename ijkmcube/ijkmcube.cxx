@@ -1137,7 +1137,7 @@ namespace {
   public:
     REGION_CUBE(const int dimension, const AXIS_SIZE_TYPE * axis_size, 
 		const AXIS_SIZE_TYPE * num_region_edges);
-    REGION_CUBE::REGION_CUBE
+    REGION_CUBE
     (const int dimension, const AXIS_SIZE_TYPE * axis_size, 
      const AXIS_SIZE_TYPE num_region_edges);
 
