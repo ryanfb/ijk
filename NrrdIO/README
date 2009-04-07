@@ -1,0 +1,4 @@
+
+NrrdIO is a C++ library for reading NRRD (nearly raw raster data) files.
+These files were downloaded from teem.sourceforge.net and are licensed
+under the GNU Lesser General Public License.

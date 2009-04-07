@@ -1,0 +1,130 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     ijkgenpatch - generate isosurface patch
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     #include "ijktable.h"
+     void ijkgenpatch
+       (const IJKTABLE::ISOSURFACE_TABLE_POLYHEDRON &amp; polyhedron,
+        const int * const vertex_sign,
+        vector&lt;ISOSURFACE_VERTEX_INDEX&gt; &amp; isov_list,
+        int &amp; num_simplices);
+     void ijkgenpatch_nep
+       (const IJKTABLE::ISOSURFACE_TABLE_POLYHEDRON &amp; polyhedron,
+        const int * const vertex_sign,
+        vector&lt;ISOSURFACE_VERTEX_INDEX&gt; &amp; isov_list,
+        vector&lt;ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE&gt; &amp;
+          isov_type,
+        int &amp; num_simplices);
+
+
+</PRE>
+<H2>ARGUMENTS</H2><PRE>
+     <B>const</B> <B>IJKTABLE::ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>polyhedron</B>
+          A convex polyhedron  containing  the  isosurface.   The
+          polyhedron  may be in dimension other than three but it
+          must be convex for <I>ijkgenpatch</I> to produce a proper iso-
+          surface.
+
+     <B>const</B> <B>int</B> <B>*</B> <B>const</B> <B>vertex_sign</B>
+          Encoding of vertex signs,  -1,  0  or  1,  representing
+          negative, zero and positive.  <I>vertex</I>_<I>sign</I>[<I>i</I>] represents
+          the vertex sign of vertex <I>i</I>. Vertices with sign -1 have
+          scalar value less than the isovalue, vertices with sign
+          0 have scalar value equal to the isovalue and  vertices
+          with  sign  1  have  scalar value greater than the iso-
+          value.
+
+     <B>vector&lt;ISOSURFACE_VERTEX_INDEX&gt;</B> <B>&amp;</B> <B>isov_list</B>
+          Array  containing  isosurface  vertices   returned   by
+          <I>ijkgenpatch</I>  or  <I>ijkgenpatch</I>_<I>nep</I>.  Isosurface simplex <I>j</I>
+          has      isosurface      vertices      (<I>isov</I>_<I>list</I>[<I>d</I>*<I>j</I>],
+          <I>isov</I>_<I>list</I>[<I>d</I>*<I>j</I>+<I>1</I>],  ...,  <I>isov</I>_<I>list</I>[<I>d</I>*<I>j</I>+<I>d</I>-<I>1</I>]) where <I>d</I> is
+          the polyhedron dimension.
+
+     <B>ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE</B> <B>&amp;</B> <B>isov_type</B>
+          Array containing isosurface vertex  types  returned  by
+          <I>ijkgenpatch</I>_<I>nep</I>.  Isosurface  vertex  <I>isov</I>_<I>list</I>[<I>k</I>]  has
+          vertex type <I>isov</I>_<I>type</I>[<I>k</I>]. The  isosurface  vertex  type
+          determines if an isosurface vertex lies on a polyhedron
+          vertex, edge or facet.
+
+     <B>int</B> <B>&amp;</B> <B>num_simplices</B>
+          Number of isosurface simplices returned by <I>ijkgenpatch</I>.
+
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     Given a convex polyhedron  <I>polyhedron</I>  and  a  sign  pattern
+     (+/-)  defined by <I>vertex</I>_<I>sign</I>, <I>ijkgenpatch</I> generates an iso-
+     surface in the polyhedron which separates the  positive  (+)
+     vertices  from the negative (-) ones.  <I>ijkgenpatch</I> returns a
+     set of d-dimensional simplices forming the isosurface  where
+     d  is  the dimension of the convex polyhedron.  The vertices
+     of each simplex lie on the edges of the original polyhedron.
+     The vertices are specified, not by their coordinates, but by
+     the  polyhedron  edges  containing   the   vertices.    This
+     separates  the  computation  of  vertex coordinates from the
+     generation of the isosurface simplices.
+
+     <I>ijkgenpatch</I>_<I>nep</I> is similar to <I>ijkgenpatch</I> but takes  a  sign
+     pattern  (+/0/-)  defined by <I>vertex</I>_<I>sign</I>, where 0 represents
+     polyhedron vertices whose scalar value equals the  isovalue.
+     <I>ijkgenpatch</I>_<I>nep</I>  generates  an  isosurface in the polyhedron
+     which separates the positive (+) vertices from the  negative
+     (-)  ones.   <I>ijkgenpatch</I>_<I>nep</I>  returns a set of d-dimensional
+     simplices forming the isosurface where d is the dimension of
+     the  convex polyhedron.  The vertices of each simplex lie on
+     the vertices and edges of the original polyhedron.  The iso-
+     surface  vertices  are  specified, not by their coordinates,
+     but by the polyhedron vertices and edges containing the ver-
+     tices.  This separates the computation of vertex coordinates
+     from the generation of the isosurface simplices.
+
+
+</PRE>
+<H2>NOTES</H2><PRE>
+     The input polyhedron must  be  convex  for  <I>ijkgenpatch</I>  and
+     <I>ijkgenpatch</I>_<I>nep</I> to produce a proper isosurface.  <I>ijkgenpatch</I>
+     and <I>ijkgenpatch</I>_<I>nep</I> create an isosurface from  a  subset  of
+     the  convex  hull of a subset of the polyhedron vertices and
+     edge midpoints.  It uses a convex hull routine written by K.
+     Clarkson.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>ijkgentable,</B><B>ijktable(3)</B>.
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+     Praveen Bhaniramka, Rephael Wenger
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

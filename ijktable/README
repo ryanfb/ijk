@@ -1,0 +1,45 @@
+
+ijktable.cxx and ijktable.h contain a set of C++ classes and routines for
+generating isosurface patches in convex polyhedra in arbitrary
+dimensions.  They construct the isosurface patch as a subset of the
+convex hull of a subset of polyhedra vertices and edge midpoints.
+(See ``Isosurface construction in any dimension using convex hulls''
+by P. Bhaniramka, R. Wenger, and R. Crawfis, IEEE Trans. on Vis. and
+Computer Graphics, 10 2004, pp. 130-141, and "Isosurfacing in higher
+Dimensions" by P. Bhaniramka, R. Wenger, and R. Crawfis,
+Visualization, 2000, Salt Lake City Utah: IEEE Computer Society
+Press.)
+
+Source code includes K. Clarkson's program hull for generating convex hulls.
+
+Programs:
+
+ijkgentable: Generate isosurface tables in various dimensions.
+ijkdifftable: Output the difference of two isosurface tables.
+ijktableinfo: Output isosurface table information.
+
+
+Source files:
+
+ijkgentable.cxx, ijkgentable.h: Main program for generating isosurface tables.
+
+ijkgenpatch.cxx, ijkgenpatch.h: Generate isosurface patch for a given
+  table entry.
+
+ijktable.cxx, ijktable.h: Class ISOSURFACE_TABLE for storing isosurface tables.
+
+ijkxitIO.cxx, ijkxitIO.h: I/O routines for .xit files (XML format).
+
+clarkson_hull.c, clarkson_hull.h: Kenneth Clarkson's convex hull routines
+  for building convex hull in arbitrary dimensions.
+
+ijkdifftable.cxx: Main program for outputting the difference of two
+  isosurface tables.
+
+
+Author:
+
+Rephael Wenger
+Dept. of Computer Science and Engineering
+The Ohio State University
+http://cse.ohio-state.edu/~wenger

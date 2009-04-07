@@ -1,0 +1,816 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     xit - XML isosurface table format
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     An isosurface table file defines a table  of  isosurface  or
+     interval  volume  patches  of  an arbitrary polyhedron in an
+     arbitrary dimension.   The  file  consists  of  some  header
+     information,   followed   by  a  description  of  the  table
+     polyhedron, a list of isosurface (interval volume) vertices,
+     and then the table of isosurface (interval volume) patches.
+
+     The header information is  the  xit  version,  the  creation
+     date,  the  polyhedron  dimension and the simplex dimension.
+     For isosurfaces, the simplex dimension is one less than  the
+     polyhedron  dimension.   For  interval  volumes, the simplex
+     dimension equals the polyhedron dimension.
+
+     The polyhedron is described by a list of vertex  coordinates
+     followed  by  a  list of edges followed by a list of facets.
+     Other polyhedron faces are not recorded.
+
+     The isosurface (interval volume)  vertices  have  four  dif-
+     ferent  types:   vertex,  edge, facet and point.  Isosurface
+     vertices of type vertex, edge or facet lie  on  a  specified
+     vertex,  edge,  or  facet,  respectively, of the isosurface.
+     Isosurface vertices of type point can lie anywhere  and  are
+     specified  by point coordinates.  Each isosurface vertex has
+     an optional string label for encoding additional information
+     about the vertex.
+
+     The isosurface (interval volume) table has an encoding type,
+     followed  by  a  list  of  table entries.  Encodings of type
+     BINARY have two possible states of each  vertex.   Encodings
+     of  type  BASE3  have  three possible states of each vertex.
+     Each isosurface table entry contains a  list  of  isosurface
+     vertices.   The i'th vertex of the j'th simplex is contained
+     in  the  (i+j*d)'th  edge  in  this  list  where  <I>d</I>  is  the
+     polyhedron dimension.
+
+
+</PRE>
+<H2>GRAMMAR</H2><PRE>
+     The ijktable grammar is given below. All strings of the form
+     "&lt; <I>xml</I>-<I>element</I>-<I>name</I> &gt;" are XML tags and terminal elements in
+     the grammar.
+
+     <I>isosurfaceTable</I> :=
+         &lt;?xml version="1.0"?&gt;
+         &lt;isotable&gt;
+           &lt;version&gt; <I>versionNumber</I> &lt;/version&gt;
+           &lt;creationDate&gt; <I>date</I> &lt;/creationDate&gt;
+           &lt;dimension&gt; <I>polyDimension</I> <I>B</I> <I>simplexDimension</I> &lt;/dimension&gt;
+           &lt;poly&gt;
+             &lt;vertices&gt;
+               &lt;numVertices&gt; <I>numPolyVertices</I> &lt;/numVertices&gt;
+               <I>vertexList</I>
+             &lt;/vertices&gt;
+             &lt;edges&gt;
+               &lt;numEdges&gt; <I>numPolyEdges</I> &lt;/numEdges&gt;
+               <I>edgeList</I>
+             &lt;/edges&gt;
+             &lt;facets&gt;
+               &lt;numFacets&gt; <I>numPolyFacets</I> &lt;/numFacets&gt;
+               <I>facetList</I>
+             &lt;/facets&gt;
+           &lt;/poly&gt;
+           &lt;isoVertices&gt;
+             &lt;numVertices&gt; <I>numIsoVertices</I> &lt;/numVertices&gt;
+             <I>isoVertexList</I>
+           &lt;/isoVertices&gt;
+           &lt;table&gt;
+             &lt;encoding&gt; <I>encodingType</I> &lt;/encoding&gt;
+             &lt;numEntries&gt; <I>numTableEntries</I> &lt;/numEntries&gt;
+             <I>tableEntryList</I>
+           &lt;/table&gt;
+         &lt;/isotable&gt;
+
+     <I>versionNumber</I> := <I>D</I>+ {'.' <I>D</I>+}*
+
+     <I>date</I> :=
+          <I>year</I> '-' <I>month</I> '-' <I>day</I>
+
+     <I>year</I> :=
+          <I>DDDD</I>
+
+     <I>month</I> :=
+          <I>DD</I>
+
+     <I>day</I> :=
+          <I>DD</I>
+
+     <I>polyDimension</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>simplexDimension</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>numPolyVertices</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>vertexList</I> :=
+          {&lt;c&gt; <I>coordinateList</I> &lt;/c&gt;}*
+
+     <I>coordinateList</I> :=
+          float {<I>B</I> <I>float</I>}*
+
+     <I>numPolyEdges</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>edgeList</I> :=
+          {&lt;v&gt; <I>vertexIndex</I> <I>B</I> <I>vertexIndex</I> &lt;/v&gt;}*
+
+     <I>numPolyFacets</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>facetList</I> :=
+          {&lt;f&gt; <I>facet</I> &lt;/f&gt;}*
+
+     <I>facet</I> :=
+          '0' |
+          <I>numFacetVertices</I> <I>B</I> <I>facetVertexList</I>
+
+     <I>facetVertexList</I> :=
+          <I>vertexIndex</I> {<I>B</I> <I>vertexIndex</I>}*
+
+     <I>numFacetVertices</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>numIsoVertices</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>isoVertexList</I> :=
+          {&lt;w&gt; <I>isoVertexLocation</I> {<I>isoVertexLabel</I>}? &lt;/w&gt;}*
+
+     <I>isoVertexLocation</I> :=
+          {&lt;<I>inV</I>&gt; <I>vertexIndex</I> &lt;/inV} | {&lt;inE&gt; <I>edgeIndex</I> &lt;/inE&gt;} |
+          {&lt;inF&gt; <I>facetIndex</I> &lt;/inF} | {&lt;c&gt; <I>coordinateList</I> &lt;/c&gt;}
+
+     <I>isoVertexLabel</I> :=
+          &lt;<I>L</I>&gt; <I>string</I> &lt;/L&gt;
+
+     <I>encodingType</I> :=
+          <I>string</I>
+
+     <I>numTableEntries</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>tableEntryList</I> :=
+          &lt;s&gt; <I>tableEntry</I> &lt;/s&gt;
+
+     <I>tabelEntry</I> :=
+             '0' |
+          <I>numSimplices</I> <I>B</I> <I>fIsimplexVertexList</I>
+
+     <I>numSimplices</I> :=
+          <I>nonNegativeInteger</I>
+
+     simplexVertexList :=
+          <I>isoVertexIndex</I> {B <I>isoVertexIndex</I>}*
+
+     <I>vertexIndex</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>edgeIndex</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>facetIndex</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>isoVertexIndex</I> :=
+          <I>nonNegativeInteger</I>
+
+     <I>D</I> :=
+          '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+     <I>B</I> :=
+          <I>whiteSpace</I>
+
+
+</PRE>
+<H2>NOTATION</H2><PRE>
+     -- <I>nonNegativeInteger</I> represents a non-negative integer.
+
+     -- <I>float</I> represents a floating point number.
+
+     -- <I>string</I> represents a character string.  Leading and trail-
+     ing  whitespaces  are  ignored, tabs and multiple spaces are
+     equivalent to a single space.
+
+     -- <I>whiteSpace</I> represents one or more whitespace  characters,
+     i.e., spaces, tabs, or line feeds.
+
+     -- Additional whitespace can be inserted between any  termi-
+     nals in the grammar.
+
+
+</PRE>
+<H2>CONSTRAINTS</H2><PRE>
+     -- Length of the <I>coordinateList</I> must  equal  the  polyhedron
+     dimension.
+
+     -- Length of <I>vertexList</I> must equal <I>numPolyVertices</I>.
+
+     -- Length of <I>edgeList</I> must equal <I>numPolyEdges</I>.
+
+     -- Length of <I>facetList</I> must equal <I>numPolyFacets</I>.
+
+     -- Length of <I>isoVertexList</I> must equal <I>numIsoVertices</I>.
+
+     -- Length of <I>tableEntryList</I> must equal <I>numTableEntries</I>.
+
+     -- <I>vertexIndex</I> is an integer between 0 and  <I>numPolyVertices</I>-
+     1, inclusive.
+
+     -- <I>edgeIndex</I> is an integer  between  0  and  <I>numPolyEdges</I>-1,
+     inclusive.
+
+     -- <I>facetIndex</I> is an integer between 0  and  <I>numPolyFacets</I>-1,
+     inclusive.
+
+     -- <I>isoVertexIndex</I> is an integer  between  0  and  <I>numIsoVer-</I>
+     <I>tices</I>, inclusive.
+
+     -- Length of <I>simplexVertexList</I>  must  equal  <I>numSimplices</I>  *
+     <I>simplexDimension</I>.
+
+     --  Encoding  types  'BINARY',  'BASE3'  and  'UNKNOWN'  are
+     currently  defined.   Users  can  define  and  use any other
+     encoding types.
+
+
+</PRE>
+<H2>COMMENTS</H2><PRE>
+     -- An isosurface table with 'BINARY' encoding typically  has
+     2^<I>numPolyVertices</I>  table  entries  although  this  is  not a
+     requirement.  Similarly, an isosurface  table  with  'BASE3'
+     encoding   typically  has  3^<I>numPolyVertices</I>  table  entries
+     although this is not a requirement.
+
+     -- In isosurface lookup tables, <I>simplexDimension</I> is one less
+     than <I>polyDimension</I>.
+
+     -- In interval volume lookup tables, <I>simplexDimension</I> equals
+     <I>polyDimension</I>.
+
+     -- <I>isoVertexList</I> represents a list of isosurface vertices or
+     interval volume vertices.
+
+
+</PRE>
+<H2>ISOSURFACE EXAMPLE</H2><PRE>
+     The following example represents the isosurface lookup table
+     for a tetrahedron in 3D.
+
+     &lt;?xml version="1.0"?&gt;
+     &lt;isotable&gt;
+     &lt;!-- Isosurface lookup table --&gt;
+     &lt;version&gt; 1.0 &lt;/version&gt;
+     &lt;creationDate&gt; 2007-12-19 &lt;/creationDate&gt;
+     &lt;dimension&gt; 3  2 &lt;/dimension&gt;
+     &lt;poly&gt;
+     &lt;vertices&gt;
+     &lt;numVertices&gt; 4 &lt;/numVertices&gt;
+     &lt;c&gt; 0 0 0 &lt;/c&gt;
+     &lt;c&gt; 2 0 0 &lt;/c&gt;
+     &lt;c&gt; 0 2 0 &lt;/c&gt;
+     &lt;c&gt; 0 0 2 &lt;/c&gt;
+     &lt;/vertices&gt;
+     &lt;edges&gt;
+     &lt;numEdges&gt; 6 &lt;/numEdges&gt;
+     &lt;v&gt; 0 1 &lt;/v&gt;
+     &lt;v&gt; 0 2 &lt;/v&gt;
+     &lt;v&gt; 0 3 &lt;/v&gt;
+     &lt;v&gt; 1 2 &lt;/v&gt;
+     &lt;v&gt; 1 3 &lt;/v&gt;
+     &lt;v&gt; 2 3 &lt;/v&gt;
+     &lt;/edges&gt;
+     &lt;facets&gt;
+     &lt;numFacets&gt; 4 &lt;/numFacets&gt;
+     &lt;f&gt; 3 0 1 2 &lt;/f&gt;
+     &lt;f&gt; 3 1 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 1 3 &lt;/f&gt;
+     &lt;/facets&gt;
+     &lt;/poly&gt;
+     &lt;isoVertices&gt;
+     &lt;numVertices&gt; 6 &lt;/numVertices&gt;
+     &lt;w&gt; &lt;inE&gt; 0 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 1 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 2 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 3 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 4 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 5 &lt;/inE&gt; &lt;/w&gt;
+     &lt;/isoVertices&gt;
+     &lt;table&gt;
+     &lt;encoding&gt; BINARY &lt;/encoding&gt;
+     &lt;numEntries&gt; 16 &lt;/numEntries&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 0 2 1 &lt;/s&gt;
+     &lt;s&gt; 1 0 3 4 &lt;/s&gt;
+     &lt;s&gt; 2 3 2 1 4 2 3 &lt;/s&gt;
+     &lt;s&gt; 1 1 5 3 &lt;/s&gt;
+     &lt;s&gt; 2 3 0 2 5 3 2 &lt;/s&gt;
+     &lt;s&gt; 2 1 4 0 5 4 1 &lt;/s&gt;
+     &lt;s&gt; 1 4 2 5 &lt;/s&gt;
+     &lt;s&gt; 1 2 4 5 &lt;/s&gt;
+     &lt;s&gt; 2 4 1 0 5 1 4 &lt;/s&gt;
+     &lt;s&gt; 2 2 0 3 5 2 3 &lt;/s&gt;
+     &lt;s&gt; 1 3 5 1 &lt;/s&gt;
+     &lt;s&gt; 2 2 3 1 4 3 2 &lt;/s&gt;
+     &lt;s&gt; 1 3 0 4 &lt;/s&gt;
+     &lt;s&gt; 1 1 2 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;/table&gt;
+     &lt;/isotable&gt;
+
+
+</PRE>
+<H2>ISOSURFACE NEP EXAMPLE</H2><PRE>
+     The following example represents an isosurface lookup  table
+     which  distinguishes  polyhedron  vertices with scalar value
+     equal to the isovalue from polyhedron vertices  with  scalar
+     value  less  than  or greater than the isovalue.  Polyhedron
+     vertices can have three different labels,  negative,  equals
+     and  positive,  representing  scalar values less than, equal
+     to,  or  greater  than  the  isovalue,  respectively.    The
+     polyhedron is a tetrahedron in 3D.
+
+     The table encoding is BASE3 since  each  tetrahedron  vertex
+     can have three different possible labels.  The table has 3^4
+     or 81 entries.
+
+     &lt;?xml version="1.0"?&gt;
+     &lt;isotable&gt;
+     &lt;!-- Isosurface lookup table --&gt;
+     &lt;version&gt; 1.0 &lt;/version&gt;
+     &lt;creationDate&gt; 2008-01-20 &lt;/creationDate&gt;
+     &lt;dimension&gt; 3  2 &lt;/dimension&gt;
+     &lt;poly&gt;
+     &lt;vertices&gt;
+     &lt;numVertices&gt; 4 &lt;/numVertices&gt;
+     &lt;c&gt; 0 0 0 &lt;/c&gt;
+     &lt;c&gt; 2 0 0 &lt;/c&gt;
+     &lt;c&gt; 0 2 0 &lt;/c&gt;
+     &lt;c&gt; 0 0 2 &lt;/c&gt;
+     &lt;/vertices&gt;
+     &lt;edges&gt;
+     &lt;numEdges&gt; 6 &lt;/numEdges&gt;
+     &lt;v&gt; 0 1 &lt;/v&gt;
+     &lt;v&gt; 0 2 &lt;/v&gt;
+     &lt;v&gt; 0 3 &lt;/v&gt;
+     &lt;v&gt; 1 2 &lt;/v&gt;
+     &lt;v&gt; 1 3 &lt;/v&gt;
+     &lt;v&gt; 2 3 &lt;/v&gt;
+     &lt;/edges&gt;
+     &lt;facets&gt;
+     &lt;numFacets&gt; 4 &lt;/numFacets&gt;
+     &lt;f&gt; 3 0 1 2 &lt;/f&gt;
+     &lt;f&gt; 3 1 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 1 3 &lt;/f&gt;
+     &lt;/facets&gt;
+     &lt;/poly&gt;
+     &lt;isoVertices&gt;
+     &lt;numVertices&gt; 10 &lt;/numVertices&gt;
+     &lt;w&gt; &lt;inV&gt; 0 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 1 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 2 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 3 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 0 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 1 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 2 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 3 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 4 &lt;/inE&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 5 &lt;/inE&gt; &lt;/w&gt;
+     &lt;/isoVertices&gt;
+     &lt;table&gt;
+     &lt;encoding&gt; BASE3 &lt;/encoding&gt;
+     &lt;numEntries&gt; 81 &lt;/numEntries&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 4 6 5 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 1 6 5 &lt;/s&gt;
+     &lt;s&gt; 1 4 7 8 &lt;/s&gt;
+     &lt;s&gt; 1 0 7 8 &lt;/s&gt;
+     &lt;s&gt; 2 7 6 5 8 6 7 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 2 4 6 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 1 0 2 &lt;/s&gt;
+     &lt;s&gt; 1 1 6 2 &lt;/s&gt;
+     &lt;s&gt; 1 2 8 4 &lt;/s&gt;
+     &lt;s&gt; 1 0 2 8 &lt;/s&gt;
+     &lt;s&gt; 1 8 6 2 &lt;/s&gt;
+     &lt;s&gt; 1 5 9 7 &lt;/s&gt;
+     &lt;s&gt; 1 0 9 7 &lt;/s&gt;
+     &lt;s&gt; 2 7 4 6 9 7 6 &lt;/s&gt;
+     &lt;s&gt; 1 1 5 9 &lt;/s&gt;
+     &lt;s&gt; 1 1 0 9 &lt;/s&gt;
+     &lt;s&gt; 1 1 6 9 &lt;/s&gt;
+     &lt;s&gt; 2 5 8 4 9 8 5 &lt;/s&gt;
+     &lt;s&gt; 1 0 9 8 &lt;/s&gt;
+     &lt;s&gt; 1 8 6 9 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 3 5 4 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 1 3 0 &lt;/s&gt;
+     &lt;s&gt; 1 1 3 5 &lt;/s&gt;
+     &lt;s&gt; 1 3 4 7 &lt;/s&gt;
+     &lt;s&gt; 1 0 7 3 &lt;/s&gt;
+     &lt;s&gt; 1 7 3 5 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 2 0 3 &lt;/s&gt;
+     &lt;s&gt; 1 2 4 3 &lt;/s&gt;
+     &lt;s&gt; 1 2 3 1 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 2 3 4 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 3 7 5 &lt;/s&gt;
+     &lt;s&gt; 1 0 3 7 &lt;/s&gt;
+     &lt;s&gt; 1 7 4 3 &lt;/s&gt;
+     &lt;s&gt; 1 1 5 3 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 5 3 4 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 6 8 9 &lt;/s&gt;
+     &lt;s&gt; 1 0 8 9 &lt;/s&gt;
+     &lt;s&gt; 2 8 5 4 9 5 8 &lt;/s&gt;
+     &lt;s&gt; 1 1 9 6 &lt;/s&gt;
+     &lt;s&gt; 1 1 9 0 &lt;/s&gt;
+     &lt;s&gt; 1 1 9 5 &lt;/s&gt;
+     &lt;s&gt; 2 6 4 7 9 6 7 &lt;/s&gt;
+     &lt;s&gt; 1 0 7 9 &lt;/s&gt;
+     &lt;s&gt; 1 7 9 5 &lt;/s&gt;
+     &lt;s&gt; 1 2 6 8 &lt;/s&gt;
+     &lt;s&gt; 1 2 0 8 &lt;/s&gt;
+     &lt;s&gt; 1 2 4 8 &lt;/s&gt;
+     &lt;s&gt; 1 2 6 1 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 2 6 4 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 2 6 7 5 8 7 6 &lt;/s&gt;
+     &lt;s&gt; 1 0 8 7 &lt;/s&gt;
+     &lt;s&gt; 1 7 4 8 &lt;/s&gt;
+     &lt;s&gt; 1 1 5 6 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 5 6 4 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;/table&gt;
+     &lt;/isotable&gt;
+
+
+</PRE>
+<H2>INTERVAL VOLUME EXAMPLE</H2><PRE>
+     The following example represents the interval volume  lookup
+     table  for  a  tetrahedron  in 3D.  Interval volume vertices
+     (listed under &lt;isoVertices&gt;) with label '0' lie on the lower
+     isosurface  bounding  the  interval  volume  while  interval
+     volume vertices with label '1' lie on the upper isosurface.
+
+     &lt;?xml version="1.0"?&gt;
+     &lt;isotable&gt;
+     &lt;!-- Isosurface lookup table --&gt;
+     &lt;version&gt; 1.0 &lt;/version&gt;
+     &lt;creationDate&gt; 2007-12-19 &lt;/creationDate&gt;
+     &lt;dimension&gt; 3  3 &lt;/dimension&gt;
+     &lt;poly&gt;
+     &lt;vertices&gt;
+     &lt;numVertices&gt; 4 &lt;/numVertices&gt;
+     &lt;c&gt; 0 0 0 &lt;/c&gt;
+     &lt;c&gt; 2 0 0 &lt;/c&gt;
+     &lt;c&gt; 0 2 0 &lt;/c&gt;
+     &lt;c&gt; 0 0 2 &lt;/c&gt;
+     &lt;/vertices&gt;
+     &lt;edges&gt;
+     &lt;numEdges&gt; 6 &lt;/numEdges&gt;
+     &lt;v&gt; 0 1 &lt;/v&gt;
+     &lt;v&gt; 0 2 &lt;/v&gt;
+     &lt;v&gt; 0 3 &lt;/v&gt;
+     &lt;v&gt; 1 2 &lt;/v&gt;
+     &lt;v&gt; 1 3 &lt;/v&gt;
+     &lt;v&gt; 2 3 &lt;/v&gt;
+     &lt;/edges&gt;
+     &lt;facets&gt;
+     &lt;numFacets&gt; 4 &lt;/numFacets&gt;
+     &lt;f&gt; 3 0 1 2 &lt;/f&gt;
+     &lt;f&gt; 3 1 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 2 3 &lt;/f&gt;
+     &lt;f&gt; 3 0 1 3 &lt;/f&gt;
+     &lt;/facets&gt;
+     &lt;/poly&gt;
+     &lt;isoVertices&gt;
+     &lt;numVertices&gt; 16 &lt;/numVertices&gt;
+     &lt;w&gt; &lt;inE&gt; 0 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 0 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 1 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 1 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 2 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 2 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 3 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 3 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 4 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 4 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 5 &lt;/inE&gt; &lt;L&gt; 0 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inE&gt; 5 &lt;/inE&gt; &lt;L&gt; 1 &lt;/L&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 0 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 1 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 2 &lt;/inV&gt; &lt;/w&gt;
+     &lt;w&gt; &lt;inV&gt; 3 &lt;/inV&gt; &lt;/w&gt;
+     &lt;/isoVertices&gt;
+     &lt;table&gt;
+     &lt;encoding&gt; BASE3 &lt;/encoding&gt;
+     &lt;numEntries&gt; 81 &lt;/numEntries&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;s&gt; 1 0 2 12 4 &lt;/s&gt;
+     &lt;s&gt; 3 5 1 3 4 3 1 2 4 1 0 2 4 &lt;/s&gt;
+     &lt;s&gt; 1 0 6 8 13 &lt;/s&gt;
+     &lt;s&gt; 3 13 6 12 8 8 6 12 4 6 2 12 4 &lt;/s&gt;
+     &lt;s&gt; 6 1 5 13 3 13 3 8 6 13 5 8 3 8 5 4 3 6 3 4 2 8 3 4 6 &lt;/s&gt;
+     &lt;s&gt; 3 9 1 8 7 7 1 8 6 1 0 8 6 &lt;/s&gt;
+     &lt;s&gt; 6 8 7 4 6 8 9 4 7 12 9 7 4 1 9 7 12 12 7 2 4 6 7 4 2 &lt;/s&gt;
+     &lt;s&gt; 6 8 3 4 6 8 7 3 6 8 5 4 3 8 7 5 3 8 9 5 7 6 3 4 2 &lt;/s&gt;
+     &lt;s&gt; 1 2 6 14 10 &lt;/s&gt;
+     &lt;s&gt; 3 14 6 10 12 10 6 4 12 6 0 4 12 &lt;/s&gt;
+     &lt;s&gt; 6 3 5 1 14 10 5 1 4 14 5 1 10 14 1 6 10 10 1 6 4 6 1 0 4 &lt;/s&gt;
+     &lt;s&gt; 3 14 2 13 10 10 2 13 8 2 0 13 8 &lt;/s&gt;
+     &lt;s&gt; 3 8 13 12 10 8 10 12 4 13 14 12 10 &lt;/s&gt;
+     &lt;s&gt; 5 8 10 5 4 8 13 5 10 1 3 5 13 13 3 5 14 13 14 5 10 &lt;/s&gt;
+     &lt;s&gt; 6 7 9 14 1 10 9 8 1 14 9 10 1 14 1 10 2 10 1 8 2 2 1 8 0 &lt;/s&gt;
+     &lt;s&gt; 5 8 10 9 4 10 12 9 4 10 14 9 12 12 7 9 1 14 7 9 12 &lt;/s&gt;
+     &lt;s&gt; 5 8 10 5 4 8 10 9 5 9 14 5 10 9 7 5 14 7 3 5 14 &lt;/s&gt;
+     &lt;s&gt; 3 11 3 7 10 7 3 6 10 3 2 6 10 &lt;/s&gt;
+     &lt;s&gt; 6 10 7 6 4 10 11 7 4 12 11 4 7 3 11 12 7 12 7 4 0 6 7 0 4 &lt;/s&gt;
+     &lt;s&gt; 6 10 1 6 4 10 7 6 1 10 5 1 4 10 7 1 5 10 11 7 5 6 1 0 4 &lt;/s&gt;
+     &lt;s&gt; 6 10 3 8 2 10 11 8 3 13 11 3 8 7 11 3 13 13 3 0 8 2 3 8 0 &lt;/s&gt;
+     &lt;s&gt; 5 12 8 11 4 13 8 11 12 7 12 11 3 7 13 11 12 8 10 11 4 &lt;/s&gt;
+     &lt;s&gt; 5 1 7 5 13 8 10 5 4 8 10 11 5 7 11 5 13 13 11 5 8 &lt;/s&gt;
+     &lt;s&gt; 6 10 1 8 2 10 3 1 2 10 9 8 1 10 9 1 3 10 11 9 3 2 1 8 0 &lt;/s&gt;
+     &lt;s&gt; 5 3 11 12 9 3 9 12 1 12 11 4 9 11 10 4 9 9 10 4 8 &lt;/s&gt;
+     &lt;s&gt; 3 8 10 5 4 8 10 9 5 9 10 11 5 &lt;/s&gt;
+     &lt;s&gt; 1 4 8 10 15 &lt;/s&gt;
+     &lt;s&gt; 3 15 8 12 10 10 8 12 2 8 0 12 2 &lt;/s&gt;
+     &lt;s&gt; 6 15 3 10 1 15 5 3 1 10 3 2 1 10 1 2 8 15 1 10 8 8 1 2 0 &lt;/s&gt;
+     &lt;s&gt; 3 15 4 10 13 10 4 6 13 4 0 6 13 &lt;/s&gt;
+     &lt;s&gt; 3 6 13 10 12 6 10 2 12 13 15 10 12 &lt;/s&gt;
+     &lt;s&gt; 5 6 10 2 3 6 13 10 3 1 13 3 5 13 15 3 5 13 15 10 3 &lt;/s&gt;
+     &lt;s&gt; 6 15 7 1 10 15 9 1 7 10 7 1 6 10 1 4 6 15 1 4 10 4 1 0 6 &lt;/s&gt;
+     &lt;s&gt; 5 6 10 2 7 10 12 2 7 10 15 12 7 7 15 12 9 7 12 1 9 &lt;/s&gt;
+     &lt;s&gt; 5 6 10 2 3 6 10 3 7 7 15 10 3 7 15 3 5 9 15 7 5 &lt;/s&gt;
+     &lt;s&gt; 3 15 4 14 8 8 4 14 6 4 2 14 6 &lt;/s&gt;
+     &lt;s&gt; 3 6 14 12 8 6 8 12 0 14 15 12 8 &lt;/s&gt;
+     &lt;s&gt; 5 6 14 1 8 6 8 1 0 3 14 5 1 14 15 5 1 14 15 1 8 &lt;/s&gt;
+     &lt;s&gt; 3 2 14 4 13 2 4 0 13 14 15 4 13 &lt;/s&gt;
+     &lt;s&gt; 1 13 14 12 15 &lt;/s&gt;
+     &lt;s&gt; 3 1 3 5 13 13 3 5 14 13 14 5 15 &lt;/s&gt;
+     &lt;s&gt; 5 2 14 4 1 2 4 0 1 7 14 1 9 14 15 1 9 14 15 4 1 &lt;/s&gt;
+     &lt;s&gt; 3 1 7 12 9 12 7 14 9 12 14 15 9 &lt;/s&gt;
+     &lt;s&gt; 3 9 7 5 14 9 14 5 15 7 3 5 14 &lt;/s&gt;
+     &lt;s&gt; 6 15 7 8 3 15 11 7 3 8 7 6 3 8 3 6 4 15 3 8 4 4 3 6 2 &lt;/s&gt;
+     &lt;s&gt; 5 6 8 7 0 8 12 7 0 8 15 7 12 7 15 11 12 7 12 11 3 &lt;/s&gt;
+     &lt;s&gt; 5 6 8 1 0 6 8 7 1 7 15 1 8 7 15 5 1 11 15 5 7 &lt;/s&gt;
+     &lt;s&gt; 5 2 4 0 3 4 13 0 3 4 15 13 3 7 13 11 3 13 15 11 3 &lt;/s&gt;
+     &lt;s&gt; 3 7 12 13 11 7 3 12 11 13 12 15 11 &lt;/s&gt;
+     &lt;s&gt; 3 1 7 5 13 7 11 5 13 13 11 5 15 &lt;/s&gt;
+     &lt;s&gt; 5 2 4 0 1 2 4 1 3 3 15 4 1 9 15 3 1 11 15 3 9 &lt;/s&gt;
+     &lt;s&gt; 3 3 9 12 1 3 11 12 9 12 11 15 9 &lt;/s&gt;
+     &lt;s&gt; 1 9 11 5 15 &lt;/s&gt;
+     &lt;s&gt; 3 11 5 10 9 9 5 10 8 5 4 10 8 &lt;/s&gt;
+     &lt;s&gt; 6 10 9 2 8 10 11 2 9 12 11 9 2 5 11 9 12 12 9 0 2 8 9 2 0 &lt;/s&gt;
+     &lt;s&gt; 6 10 1 2 8 10 9 1 8 10 3 2 1 10 9 3 1 10 11 3 9 8 1 2 0 &lt;/s&gt;
+     &lt;s&gt; 6 10 5 4 6 10 11 5 6 13 11 6 5 9 11 13 5 13 5 6 0 4 5 0 6 &lt;/s&gt;
+     &lt;s&gt; 5 12 6 2 11 13 6 12 11 9 12 5 11 9 13 12 11 6 10 2 11 &lt;/s&gt;
+     &lt;s&gt; 5 1 9 13 3 6 10 2 3 6 10 3 11 9 11 13 3 13 11 6 3 &lt;/s&gt;
+     &lt;s&gt; 6 10 1 4 6 10 5 4 1 10 7 1 6 10 7 5 1 10 11 5 7 4 1 0 6 &lt;/s&gt;
+     &lt;s&gt; 5 5 11 7 12 5 7 1 12 12 11 7 2 11 10 7 2 7 10 6 2 &lt;/s&gt;
+     &lt;s&gt; 3 6 10 2 3 6 10 3 7 7 10 3 11 &lt;/s&gt;
+     &lt;s&gt; 6 8 5 6 4 8 9 6 5 14 9 5 6 14 11 5 9 14 5 2 6 4 5 6 2 &lt;/s&gt;
+     &lt;s&gt; 5 12 6 9 0 14 6 9 12 14 9 11 12 12 9 11 5 6 8 9 0 &lt;/s&gt;
+     &lt;s&gt; 5 14 9 1 6 14 9 3 1 14 11 3 9 6 8 1 0 6 8 9 1 &lt;/s&gt;
+     &lt;s&gt; 5 14 13 11 5 14 2 13 5 13 2 0 5 13 9 11 5 2 4 0 5 &lt;/s&gt;
+     &lt;s&gt; 3 9 13 12 11 9 12 5 11 13 14 12 11 &lt;/s&gt;
+     &lt;s&gt; 3 1 13 3 9 9 13 3 11 13 14 3 11 &lt;/s&gt;
+     &lt;s&gt; 5 14 5 2 1 14 7 5 1 14 11 5 7 2 4 0 1 2 4 1 5 &lt;/s&gt;
+     &lt;s&gt; 3 5 12 7 1 5 12 11 7 12 14 11 7 &lt;/s&gt;
+     &lt;s&gt; 1 7 14 3 11 &lt;/s&gt;
+     &lt;s&gt; 6 8 3 6 4 8 5 3 4 8 7 6 3 8 7 3 5 8 9 7 5 4 3 6 2 &lt;/s&gt;
+     &lt;s&gt; 5 5 9 12 7 5 7 12 3 12 9 0 7 9 8 0 7 7 8 0 6 &lt;/s&gt;
+     &lt;s&gt; 3 6 8 1 0 6 8 7 1 7 8 9 1 &lt;/s&gt;
+     &lt;s&gt; 5 13 5 3 0 13 7 3 5 13 9 7 5 5 4 3 0 3 4 2 0 &lt;/s&gt;
+     &lt;s&gt; 3 12 5 9 7 12 5 7 3 13 12 9 7 &lt;/s&gt;
+     &lt;s&gt; 1 13 7 1 9 &lt;/s&gt;
+     &lt;s&gt; 3 2 4 0 1 2 4 1 3 3 4 1 5 &lt;/s&gt;
+     &lt;s&gt; 1 12 3 5 1 &lt;/s&gt;
+     &lt;s&gt; 0 &lt;/s&gt;
+     &lt;/table&gt;
+     &lt;/isotable&gt;
+
+
+</PRE>
+<H2>XML SCHEMA DEFINITION (XSD)</H2><PRE>
+     The following is the XML schema definition of an  isosurface
+     table XML file.
+
+     &lt;?xml version="1.0"?&gt;
+       &lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+
+       &lt;!-- definition of isotable --&gt;
+       &lt;xsd:element name="isotable"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element name="version" type="versionNum" /&gt;
+          &lt;xsd:element name="creationDate" type="xsd:date" /&gt;
+          &lt;xsd:element name="dimension" type="dimensionList" /&gt;
+          &lt;xsd:element ref="poly" /&gt;
+          &lt;xsd:element ref="isoVertices" /&gt;
+          &lt;xsd:element ref="table" /&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of poly --&gt;
+       &lt;xsd:element name="poly"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element ref="vertices" /&gt;
+          &lt;xsd:element ref="edges" /&gt;
+          &lt;xsd:element ref="facets" /&gt;
+           &lt;/xsd:sequence&gt;
+
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of isoVertices --&gt;
+       &lt;xsd:element name="isoVertices"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element name="numVertices" type="xsd:nonNegativeInteger" /&gt;
+          &lt;xsd:element name="w" minOccurs="0" maxOccurs="unbounded"&gt;
+            &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                &lt;xsd:choice&gt;
+               &lt;xsd:element name="inV" type="xsd:nonNegativeInteger" /&gt;
+               &lt;xsd:element name="inE" type="xsd:nonNegativeInteger" /&gt;
+               &lt;xsd:element name="inF" type="xsd:nonNegativeInteger" /&gt;
+               &lt;xsd:element name="c" type="coordType" /&gt;
+                &lt;/xsd:choice&gt;
+                &lt;xsd:element name="L" type="xsd:token" minOccurs="0" /&gt;
+              &lt;/xsd:sequence&gt;
+            &lt;/xsd:complexType&gt;
+          &lt;/xsd:element&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of table --&gt;
+       &lt;xsd:element name="table"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element name="encoding" type="xsd:string" /&gt;
+          &lt;xsd:element name="numEntries" type="xsd:nonNegativeInteger" /&gt;
+          &lt;xsd:element name="s" type="simplexVertexList"
+            minOccurs="0" maxOccurs="unbounded" /&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of vertices --&gt;
+       &lt;xsd:element name="vertices"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element name="numVertices" type="xsd:nonNegativeInteger" /&gt;
+          &lt;xsd:element name="c" type="coordType"
+            minOccurs="0" maxOccurs="unbounded" /&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of edges --&gt;
+       &lt;xsd:element name="edges"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+
+          &lt;xsd:element name="numEdges" type="xsd:nonNegativeInteger" /&gt;
+          &lt;xsd:element name="v" type="edgeEndpoints"
+            minOccurs="0" maxOccurs="unbounded" /&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of facets --&gt;
+       &lt;xsd:element name="facets"&gt;
+         &lt;xsd:complexType&gt;
+           &lt;xsd:sequence&gt;
+          &lt;xsd:element name="numFacets" type="xsd:nonNegativeInteger" /&gt;
+          &lt;xsd:element name="f" type="facetVertexList"
+            minOccurs="0" maxOccurs="unbounded" /&gt;
+           &lt;/xsd:sequence&gt;
+         &lt;/xsd:complexType&gt;
+       &lt;/xsd:element&gt;
+
+       &lt;!-- definition of types --&gt;
+       &lt;xsd:simpleType name="versionNum"&gt;
+         &lt;xsd:restriction base="xsd:token"&gt;
+           &lt;xsd:pattern value="([0-9]+)([.][0-9]+)+" /&gt;
+         &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="dimensionList"&gt;
+         &lt;xsd:restriction&gt;
+           &lt;xsd:simpleType&gt;
+          &lt;xsd:list itemType="xsd:nonNegativeInteger" /&gt;
+           &lt;/xsd:simpleType&gt;
+           &lt;xsd:length value="2" /&gt;
+         &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="coordType"&gt;
+         &lt;xsd:list itemType="xsd:decimal" /&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="nonNegativeIntegerList"&gt;
+         &lt;xsd:list itemType="xsd:nonNegativeInteger" /&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="vertexList"&gt;
+         &lt;xsd:list itemType="xsd:nonNegativeInteger" /&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="facetVertexList"&gt;
+         &lt;xsd:restriction base="nonNegativeIntegerList"&gt;
+           &lt;xsd:minLength value="1" /&gt;
+         &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="simplexVertexList"&gt;
+         &lt;xsd:restriction base="nonNegativeIntegerList"&gt;
+           &lt;xsd:minLength value="1" /&gt;
+         &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:simpleType name="edgeEndpoints"&gt;
+         &lt;xsd:restriction base="vertexList"&gt;
+           &lt;xsd:length value="2" /&gt;
+         &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
+
+       &lt;xsd:complexType name="faceID" mixed="true"&gt;
+         &lt;xsd:sequence&gt;
+           &lt;xsd:element name="L" type="xsd:token" minOccurs="0" /&gt;
+         &lt;/xsd:sequence&gt;
+       &lt;/xsd:complexType&gt;
+
+       &lt;xsd:complexType name="isoVertPoint"&gt;
+         &lt;xsd:sequence&gt;
+           &lt;xsd:element name="p"&gt;
+          &lt;xsd:complexType&gt;
+            &lt;xsd:sequence&gt;
+              &lt;xsd:element name="c" type="coordType" /&gt;
+              &lt;xsd:element name="L" type="xsd:token" /&gt;
+            &lt;/xsd:sequence&gt;
+          &lt;/xsd:complexType&gt;
+           &lt;/xsd:element&gt;
+         &lt;/xsd:sequence&gt;
+       &lt;/xsd:complexType&gt;
+
+       &lt;/xsd:schema&gt;
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+     Rephael Wenger
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

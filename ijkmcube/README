@@ -1,0 +1,40 @@
+ijkmcube:
+
+Marching Cubes algorithm for for generating isosurfaces in arbitrary 
+(small) dimensions.
+
+ijkmcube_main.cxx: Main program.
+
+ijkmcube.cxx, ijkmcube.h: Marching cubes.  Generate an isosurface from
+   a scalar field.
+
+ijktable.cxx, ijktable.h: Class ISOSURFACE_TABLE for storing isosurface tables.
+
+ijkxitIO.cxx, ijkxitIO.h: C++ routines for reading isosurface table xit file.
+
+ijkIO.txx: C++ templates for reading and writing Geomview .off files.
+
+ijkoctree.h, ijkoctree.cxx:  Class OCTREE representing an octree.
+
+
+Note: Program ijkmcube searches for an isosurface lookup table
+in the isosurface lookup table directory.  The isosurface directory
+is either specified by the parameter "-dir {isotable_directory}"
+or is set by the environment variable IJK_ISOTABLE_DIR or
+is set by the cmake variable IJK_ISOTABLE_DIR in CMakeLists.txt.
+The parameter "-dir {isotable_directory}" overrides the environment
+variable or cmake variable and the environment variable IJK_ISOTABLE_DIR
+overrides the cmake variable IJK_ISOTABLE_DIR.
+
+INPUT FORMAT: Input is an array of scalar values in a Nearly Raw Raster 
+    Data (Nrrd) file.
+
+OUTPUT FORMAT: Output is a set of simplices in Geomview .off format.
+
+
+Authors:
+
+Rephael Wenger
+Dept. of Computer Science and Engineering
+The Ohio State University
+http://www.cse.ohio-state.edu/~wenger

@@ -1,0 +1,658 @@
+.TH IJKTABLE 3 "17 MAY 2008"
+.SH NAME
+ISOSURFACE_TABLE \- isosurface table class
+.br
+ISOSURFACE_TABLE_POLYHEDRON \- polyhedron class
+.br
+ISOSURFACE_VERTEX \- isosurface vertex class
+.br 
+ISOSURFACE_TABLE_ERROR \- error message class
+.SH SYNOPSIS
+#include "ijktable.h"
+.br
+using namespace IJKTABLE;
+.br
+class ISOSURFACE_TABLE_POLYHEDRON;
+.br
+class ISOSURFACE_VERTEX;
+.br
+class ISOSURFACE_TABLE;
+.br
+class ISOSURFACE_TABLE_ERROR;
+.SH DESCRIPTION
+Each isosurface or interval volume lookup table 
+is based on a convex polyhedron
+in some dimension (not necessarily three.)
+Each table entry corresponds to a set of labels (-/+) or (-/=/+) or
+(-/*/+) on the vertices of the polyhedron.
+Each table entry contains a set of simplices
+forming an isosurface patch. 
+.SH CLASS ISOSURFACE_TABLE_POLYHEDRON
+.PP
+Included are routines for setting and getting 
+the polyhedron vertices and edges and
+for creating hypercubes and simplices in arbitrary dimensions.
+The polyhedron is defined by its vertices, edges and facets.
+No other faces are used.
+.SS "CONSTRUCTORS, DESTRUCTOR, COPY"
+Constructor, destructor and copy member functions
+for class \fIISOSURFACE_TABLE_POLYHEDRON\fR.
+.TP 5
+.B "ISOSURFACE_TABLE_POLYHEDRON(const int d)
+Constructor.  Initialize polyhedron dimension to
+.I d.
+.TP 5
+.B "ISOSURFACE_TABLE_POLYHEDRON
+.RS 10
+.B "(const ISOSURFACE_TABLE_POLYHEDRON & init)
+.RE
+.RS 5
+Constructor.  Set polyedron to
+.I init.
+.RE
+.TP 5
+.B "~ISOSURFACE_TABLE_POLYHEDRON()
+Destructor.
+.TP 5
+.B "const ISOSURFACE_TABLE_POLYHEDRON & operator = 
+.RS 10
+.B "(const ISOSURFACE_TABLE_POLYHEDRON &)
+.RE
+.RS 5
+Copy operator.
+.RE
+.SS "GET MEMBER FUNCTIONS"
+Member functions to get information from class
+\fIISOSURFACE_TABLE_POLYHEDRON\fR.
+.TP 5
+.B "int Dimension() const
+Return polyhedron dimension.
+.TP 5
+.B "int NumVertices() const
+Return number of polyhedron vertices.
+.TP 5
+.B "int NumEdges() const
+Return number of polyhedron edges.
+.TP 5
+.B "int NumFacets() const
+Return number of polyhedron facets.
+.TP 5
+.B "int NumFacetVertices(const FACET_INDEX jf) const
+Return number of vertices in facet
+.I jf.
+.TP 5
+.B "int VertexCoord(const int iv, const int ic) const
+Return coordinate
+.I ic
+of vertex
+.I iv.
+.TP 5
+.B "int EdgeEndpoint(const EDGE_INDEX ie, const int j) const
+Return vertex index of endpoint
+.I j
+of edge
+.I ie.
+The value of
+.I j 
+is either 0 or 1.
+.TP 5
+.B "int MidpointCoord(const EDGE_INDEX ie, const int ic) const
+Return coordinate
+.I ic
+of the midpoint of edges
+.I ie.
+Note that all vertex coordinates must be even
+so that midpoint coordinates are integers.
+.TP 5
+.B "FACET Facet(const FACET_INDEX jf) const
+Return an integer encoding the vertices contained in the facet.
+The k'th polyhedron vertex lies on the facet if the k'th bit
+is a 1.
+.TP 5
+.B "bool FacetVertexFlag(const FACET_INDEX jf, const int iv) const
+Return
+.I true
+if facet
+.I jf
+contains vertex
+.I iv.
+Return
+.I false
+otherwise.
+.SS "SET MEMBER FUNCTIONS"
+Member functions to set information in class 
+\fIISOSURFACE_TABLE_POLYHEDRON\fR.
+.TP 5
+.B "void SetDimension(const int d)
+Set the polyhedron dimension.
+.TP 5
+.B "void SetNumVertices(const int numv)
+Set the number of polyhedron vertices.
+.TP 5
+.B "void SetNumEdges(const int nume)
+Set the number of polyhedron edges.
+.TP 5
+.B "void SetNumFacets(const int numf)
+Set the number of polyhedron facets.
+.TP 5
+.B "void SetSize(const int numv, const int nume, const int numf)
+Set the number of polyhedron vertices, edges and facets.
+.TP 5
+.B "void SetVertexCoord(const int iv, const int ic, const int coord)
+Set coordinate
+.I ic
+of vertex
+.I iv
+to
+.I coord.
+Note that vertex coodinates MUST BE even,
+so that edge midpoints are integers.
+Note that
+.I SetNumVertices()
+or 
+.I SetSize()
+must be called before 
+.I SetVertexCoord().
+.TP 5
+.B "void SetEdge(const EDGE_INDEX ie, const int iv0, const int iv1)
+Set the endpoints of edge
+.I ie
+to vertices
+.I iv0
+and
+.I iv1.
+Note that 
+.I SetNumEdges() 
+or 
+.I SetSize()
+must be called before 
+.I SetEdge().
+.TP 5
+.B "void SetFacetVertex(const FACET_INDEX jf, const int iv, 
+.RS 20
+.B "const bool in_facet)
+.RE
+.RS 5
+Set the bit representing whether facet \fIjf\fR
+contains vertex \fIiv\fR to \fIin_facet\fR.
+If \fIin_facet\fR is true, then facet \fIjf\fR contains vertex  \fIiv\fR.
+Note that 
+.I SetNumFacets() 
+or 
+.I SetSize()
+must be called before 
+.I SetFacetVertex().
+.RE
+.SS "GENERATE CUBES, SIMPLICES, PYRAMIDS"
+Member functions which generate all the vertices,
+edges and facets of cubes, simplices or pyramids.
+.TP 5
+.B "void GenCube(const int d)
+Generate a hypercube of dimension
+.I d.
+Generates all vertices and edges of the hypercube.
+Vertex coordinates are 0 and 2.
+Vertices are indexed in increasing lexicographical order,
+i.e., (0 0 0), (2 0 0), (0 2 0), (2 2 0), (0 0 2), etc.
+Edges are indexed in increasing lexicographical order 
+by their midpoint,
+i.e., first come edges whose midpoints have last coordinate 0,
+then edges whose midpoints have last coordinate 1,
+then edges whose midpoints have last coordinate 2.
+.TP 5
+.B "void GenPyramid(const int d)
+Generate a pyramid of dimension
+.I d.
+Generates all vertices and edges of the hypercube.
+Base vertex coordinates are 0 and 4.
+Apex coordinates are all 2, i.e., (2 2 2).
+Base vertices are listed first, then apex vertex.
+Base vertices are indexed in increasing lexicographical order,
+i.e., (0 0 0), (4 0 0), (0 4 0), (4 4 0), (0 0 4), etc.
+Base edges are listed first, then edges incident on the apex.
+Base edges are indexed in increasing lexicographical order 
+by their midpoint,
+i.e., first come edges whose midpoints have last coordinate 0,
+then edges whose midpoints have last coordinate 1,
+then edges whose midpoints have last coordinate 2.
+Apex edges are indexed in the same order as the base vertices,
+i.e. in 3D, the order of the base edges is
+(0, 4), (1, 4), (2, 4), (3, 4), where 4 is the index of the apex.
+.TP 5
+.B "void GenSimplex(const int d)
+Generate a simplex of dimension
+.I d.
+Generates all vertices and edges of the simplex.
+One vertex is the origin, (0, 0, ..., 0).
+All other vertices lie on the coordinate axes,
+i.e., (2, 0, 0).
+Vertices are indexed in increasing lexicographical order,
+i.e., (0 0 0 0), (2 0 0 0), (0 2 0 0), (0 0 2 0), (0 0 0 2).
+Edges are indexed in increasing lexicographical order
+by their endpoint indices, i.e.,
+(0 1), (0 2), (0 3), (0 4), (1 2), (1 3), (1 4), (2 3), (2 4), (3 4).
+.SS "CHECK MEMBER FUNCTIONS"
+Member functions to check validity or consistency
+of the date in class \fIISOSURFACE_TABLE_POLYHEDRON\fR.
+.TP 5
+.B "bool CheckDimension() const
+Check polyhedron dimension is valid.
+Returns 
+.I false 
+if polyhedron dimension is invalid.
+.TP 5
+.B "bool Check(ERROR & error) const
+Check polyhedron specification is consistent.
+Returns \fIfalse\fR and an error message in class \fIerror\fR
+if polyhedron specification is inconsistent.
+.SH CLASS ISOSURFACE_VERTEX 
+.PP
+Included are routines for setting and getting 
+isosurface vertex type, face index and labels.
+.SS "ISOSURFACE_VERTEX_TYPE"
+Definition of isosurface vertex type.
+.TP 5
+.B "typedef enum {VERTEX, EDGE, FACET, POINT} ISOSURFACE_VERTEX_TYPE;
+Type of isosurface vertex.
+\fIVERTEX\fR represents an isosurface vertex which is on a polyhedron vertex,
+\fIEDGE\fR represents an isosurface vertex lying on a polyhedron edge,
+\fIFACET\fR represents an isosurface vertex lying on a polyhedron facet,
+and \fIPOINT\fR represents an isosurface vertex lying anywhere
+in the polyhedron.
+.SS "CONSTRUCTOR AND DESTRUCTOR"
+Constructor and destructor for class \fIISOSURFACE_VERTEX\fR.
+.TP 5
+.B "ISOSURFACE_VERTEX()
+Constructor.
+.TP 5
+.B "~ISOSURFACE_VERTEX()
+Destructor.
+.SS "GET MEMBER FUNCTIONS"
+Member functions to get information from class \fIISOSURFACE_VERTEX\fR.
+.TP 5
+.B "ISOSURFACE_VERTEX_TYPE Type() const
+Return the type of the isosurface vertex.
+.TP 5
+.B "int Face() const
+Return the index of the face containing the isosurface vertex.
+The face containing the vertex depends upon the isosurface vertex type
+and this index.
+For instance, if the isosurface vertex type is EDGE and the index is 3,
+then the isosurface vertex lies on polyhedron edge 3.
+If the isosurface vertex type is vertex and the index is 3,
+then the isosurface vertex lies on polyhedron vertex 3.
+The face index is undefined if the isosurface vertex type is POINT.
+.TP 5
+.B "int NumCoord() const
+Return the number of coordinates (the dimension) of the isosurface vertex.
+Defined only if the isosurface vertex type is POINT.
+.TP 5
+.B "COORD_TYPE Coord(const int ic) const
+Return the \fIic\fR'th coordinate of the isosurface vertex.
+Defined only if the isosurface vertex type is POINT.
+.TP 5
+.B "std::string Label() const
+Return the isosurface vertex label.
+This label can be any string.
+.TP 5
+.B "bool IsLabelSet() const
+Return \fItrue\fR if the label is set and \fIfalse\fR otherwise.
+.SS "SET MEMBER FUNCTIONS"
+Member functions to set information in class \fIISOSURFACE_VERTEX\fR.
+.TP 5
+.B "void SetType(const ISOSURFACE_VERTEX_TYPE t)
+Set the isosurface vertex type.
+.TP 5
+.B "void SetFace(const int index)
+Set the index of the face containing the isosurface vertex.
+.TP 5
+.B "void SetNumCoord(const int numc)
+Set the number of coordinates of the isosurface vertex.
+.TP 5
+.B "void SetCoord(const int ic, const COORD_TYPE c)
+Set \fIic\fR'th vertex coordinate to coordinate \fIc\fR.
+.TP 5
+.B "void SetLabel(const std::string & s)
+Set the label of the isosurface vertex.
+.SH CLASS ISOSURFACE_TABLE
+.PP
+Included are routines for setting and getting the isosurface polyhedron,
+the isosurface vertices and the isosurface table entries.
+Each table entry consists of a list of (\fId\fR-1)-dimensional simplices.
+Each simplex contains \fId\fR simplex vertices.
+Simplex vertices can be given by their coordinates
+or by the polyhedron vertex, edge or facet containing the vertex.
+This separates the computation of vertex coordinates
+from the generation of the isosurface simplices.
+.SS "CONSTRUCTORS AND DESTRUCTOR"
+Constructor, destructor and copy member functions
+for class \fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "ISOSURFACE_TABLE(const int d)
+Constructor.  Initialize polyhedron dimension and simplex dimension to
+.I d.
+.TP 5
+.B "ISOSURFACE_TABLE(const int poly_dimension, 
+.RS 17
+.B "const int simplex_dimension)
+.RE
+.RS 5
+Constructor.  Initialize polyhedron dimension to \fIpoly_dimension\fR
+and simplex dimension to \fIsimplex_dimension\fR.
+Isosurfaces have \fIsimplex_dimension\fR equal to \fIpoly_dimension\fR-1.
+Interval volumes have \fIsimplex_dimension\fR equal to \fIpoly_dimension\fR.
+.RE
+.TP 5
+.B "~ISOSURFACE_TABLE()
+Destructor.
+.SS "GET MEMBER FUNCTIONS"
+Member functions to get information from class \fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "ENCODING Encoding() const
+Return the encoding of the isosurface table.
+Valid encodings are \fIBINARY\fR, \fIBASE3\fR and \fINONSTANDARD\fR.
+.TP 5
+.B "ENCODING EncodingName() const
+Return the string storing the encoding name.
+Used to store names of non-standard encodings.
+.TP 5
+.B "static std::string StandardEncodingName(const ENCODING encoding)
+Return the string with the encoding name for a standard encoding.
+Returns string "BINARY" for encoding \fIBINARY\fR and string "BASE3"
+for encoding \fIBASE3\fR.
+.TP 5
+.B "const ISOSURFACE_TABLE_POLYHEDRON & Polyhedron() const
+Return (\fIconst\fR) reference to isosurface table polyhedron.
+.TP 5
+.B "const ISOSURFACE_VERTEX & IsosurfaceVertex(const int i) const
+Return (\fIconst\fR) reference to \fIi\fR'th isosurface vertex.
+.TP 5
+.B "int Dimension() const
+Return dimension of isosurface table polyhedron.
+.TP 5
+.B "int SimplexDimension() const
+Return dimension of isosurface table simplices.
+.TP 5
+.B "int NumVerticesPerSimplex() const
+Return number of vertices per simplex.
+Number of vertices per simplex equals \fISimplexDimension()\fR+1.
+.TP 5
+.B "int NumTableEntries() const
+Return number of entries in isosurface table.
+.TP 5 
+.B "int NumSimplices(const int it) const
+Return number of simplices in entry \fIit\fR.
+.TP 5
+.B "int SimplexVertex(const int it, const int is, const int k) const
+Return the \fIk\fR'th simplex vertex in simplex \fRIis\fR
+in table entry \fIit\fR.
+Returns an index to an isosurface vertex.
+.TP 5
+.B "int MaxNumVertices() const
+Return the maximum number of vertices permitted in a polyhedron.
+Even tables for polyhedra of this size are probably
+impossible to compute or store.
+.TP 5
+.B "bool IsTableAllocated() const
+Return true if isosurface table has already been allocated.
+Note that the polyhedron cannot be changed once the table has
+been allocated.
+The table must be allocated once and only once before
+storing the isosurface patches in the table.
+.SS "SET POLYHEDRON FUNCTIONS"
+Member functions to set polyhedron information in class 
+\fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "void SetDimension(const int d)
+Set the polyhedron dimension to be \fId\fR.
+.TP 5
+.B "void SetNumPolyVertices(const int numv)
+Set number of polyhedron vertices to \fInumv\fR.
+.TP 5
+.B "void SetNumPolyEdges(const int nume)
+Set number of polyhedron edges to \fInume\fR.
+.TP 5
+.B "void SetNumPolyFacets(const int numf)
+Set number of polyhedron facets to \fInumf\fR.
+.TP 5
+.B "void SetPolySize(const int numv, const int nume, const int numf)
+Set number of polyhedron vertices to \fInumv\fR,
+set number of polyhedron edges to \fInume\fR and
+set number of polyhedron facets to \fInumf\fR.
+.TP 5
+.B "void SetPolyVertexCoord(const int iv, const int ic,"
+.RS 24
+.B "const int coord)"
+.RE
+.RS 5
+Set coordinate \fIic\fR of polyhedron vertex \fIiv\fR to \fIcoord\fR.
+Note that \fISetPolyNumVertices()\fR or \fISetPolySize()\fR
+must be called before \fISetPolyVertexCoord()\fR.
+.RE
+.TP 5
+.B "void SetPolyEdge(const EDGE_INDEX ie, const int iv0, 
+.RS 17
+.B "const int iv1)
+.RE
+.RS 5
+Set the endpoints of polyhedron edge \fIie\fR to vertices \fIiv0\fR
+and \fIiv1\fR.
+Note that 
+.I SetNumPolyEdges() 
+or 
+.I SetPolySize()
+must be called before 
+.I SetPolyEdge().
+.RE
+.TP 5
+.B "void SetPolyFacetVertex(const int jf, const int iv, 
+.RS 24
+.B "const bool in_facet)
+.RE
+.RS 5
+Set the bit representing whether facet \fIjf\fR
+contains vertex \fIiv\fR to \fIin_facet\fR.
+If \fIin_facet\fR is true, then facet \fIjf\fR contains vertex  \fIiv\fR.
+Note that 
+.I SetNumPolyFacets() 
+or 
+.I SetPolySize()
+must be called before 
+.I SetPolyFacetVertex().
+.RE
+.TP 5
+.B "void Set(const ISOSURFACE_TABLE_POLYHEDRON & polyhedron)
+Set the isosurface table polyhedron to \fIpolyhedron\fR.
+.SS "SET ISOSURFACE VERTEX FUNCTIONS"
+Member functions to set isosurface vertex information in class 
+\fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "void SetNumIsosurfaceVertices(const int num_vertices)
+Set number of isosurface vertices to \fInum_vertices\fR.
+.TP 2
+.B "void SetIsosurfaceVertexType
+.B "(const int i, 
+.br
+.B " const ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE t)
+.RS 5
+Set isosurface vertex type of vertex \fIi\fR to type \fIt\fR.
+.RE
+.TP 5
+.B "void SetIsoVertexFace(const int i, const int index)
+Set face index of isosurface vertex \fIi\fR.
+.TP 5
+.B "void SetIsoVertexNumCoord(const int i, const int numc)
+Set the number of coordinates of isosurface vertex \fIi\fR.
+.TP 2
+.B "void SetIsoVertexCoord
+.br
+.B "(const int i, const int ic,
+.br
+.B " const ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE t)
+.RS 5
+Set the coordinate \fIic\fR of isosurface vertex \fIi\fR.
+.RE
+.TP 5
+.B "void SetIsoVertexLabel(const int i, const std::string & s)
+Set the label of isosurface vertex \fIi\fR.
+.SS "SET LOOKUP TABLE FUNCTIONS"
+Member functions to set lookup table information in class 
+\fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "void SetSimplexDimension(const int d)
+Set the simplex dimension to be \fId\fR.
+.TP 5
+.B "void SetEncoding(const ENCODING encoding)
+Set the table encoding to be \fIencoding\fR.
+.TP 5
+.B "void SetBindaryEncoding()
+Set the table encoding to be \fIBINARY\fR.
+.TP 5
+.B "void SetBase3Encoding()
+Set the table encoding to be \fIBASE3\fR.
+.TP 5
+.B "void SetNonstandardEncoding(const & std::name)
+Set the table encoding to be \fINONSTANDARD\fR
+and the encoding string name to be \fIname\fR.
+.TP 5
+.B "void SetNumTableEntries(const int num_table_entries)
+Set number of isosurface table entries.
+.TP 5
+.B "void SetNumSimplices(const int it, const int nums)
+Set number of simplices in table entry
+.I it.
+.TP 5
+.B "void SetSimplexVertex(const int it, const int is,
+.RS 20
+.B "const int iv, const EDGE_INDEX isov)
+.RE
+.RS 5
+Set index of of vertex \fIiv\fR of simplex \fIis\fR of table entry \fIit\fR
+to isosurface vertex \fIisov\fR.
+.RE
+.SS "GENERATE POLYHEDRA"
+Member functions to generate cubes, simplices or pyramids.
+.TP 5
+.B "void GenCube(const int d)
+Generate a hypercube of dimension
+.I d.
+Vertices and edges are indexed as in function
+.I ISOSURFACE_TABLE_POLYHEDRON::GenCube().
+.TP 5
+.B "void GenPyramid(const int d)
+Generate a pyramid of dimension
+.I d.
+Vertices and edges are indexed as in function
+.I ISOSURFACE_TABLE_POLYHEDRON::GenPyramid().
+.TP 5
+.B "void GenSimplex(const int d)
+Generate a simplex of dimension
+.I d.
+Vertices and edges are indexed as in function
+.I ISOSURFACE_TABLE_POLYHEDRON::GenSimplex().
+.SS "GENERATE ISOSURFACE VERTICES"
+Functions to generate isosurface vertices from polyhedron
+vertices, edges or facets.
+Function \fISetNumIsosurfaceVertices()\fR must be called
+before any of these functions.
+.TP 5
+.B "void StorePolyVerticesAsIsoVertices(const int vstart)
+Store polyhedron vertices as isosurface vertices,
+starting at isosurface vertex \fIvstart\fR.
+The number of isosurface vertices must be at least \fIvstart\fR
+plus the number of polyhedron vertices.
+.TP 5
+.B "void StorePolyEdgesAsIsoVertices(const int vstart)
+Generate an isosurface vertex for each polyhedron edge,
+starting at isosurface vertex \fIvstart\fR.
+The number of isosurface vertices must be at least \fIvstart\fR
+plus the number of polyhedron edges.
+.TP 5
+.B "void StorePolyVerticesAsIsoVertices(const int vstart)
+Generate an isosurface vertex for each polyhedron facet,
+starting at isosurface vertex \fIvstart\fR.
+The number of isosurface vertices must be at least \fIvstart\fR
+plus the number of polyhedron facets.
+.SS "CHECK MEMBER FUNCTIONS"
+Member functions to check validity or consistency
+of the date in class \fIISOSURFACE_TABLE\fR.
+.TP 5
+.B "bool CheckDimension(const int d) const
+Check dimension \fId\fR is a valid polyhedron dimension.
+.TP 5
+.B "bool CheckDimension() const
+Check current polyhedron dimension is valid.
+.TP 5
+.B "bool CheckTable(ERROR & error) const
+Check isosurface table specification is consistent.
+Return \fIfalse\fR and an error message in class \fIerror\fR
+if the table specification is inconsistent.
+.TP 5 
+.B "bool Check(ERROR & error) const
+Check that isosurface polyhedron and isosurface table 
+specifications are consistent.
+Return \fIfalse\fR and an error message in class \fIerror\fR
+if an inconsistency is detected.
+.SH CLASS ISOSURFACE_TABLE_ERROR
+.PP
+Functions in ISOSURFACE_TABLE_POLYHEDRON and ISOSURFACE_TABLE throw
+the error class ISOSURFACE_TABLE_ERROR upon detecting an error.
+.TP 5
+.B "ISOSURFACE_TABLE_ERROR()
+Constructor.  No error message.
+.TP 5
+.B "ISOSURFACE_TABLE_ERROR(const char * error_msg)
+.RS 0
+.B "ISOSURFACE_TABLE_ERROR(const std::string & error_msg)
+.RE
+.RS 5
+Constructors.  Set the first error message to \fIerror_msg\fR.
+.RE
+.TP 5
+.B "int NumMessage() const
+Return the number of error messages.
+.TP 5
+.B "std::string Message(const int i)
+Return the \fIi\fR'th error message.
+.TP 5
+.B "void AddMessage(const std::string & error_msg)
+.RS 0
+.B "void AddMessage(const char * error_msg)
+.RE
+.RS 5
+Add another error message.
+.RE
+.TP 5
+.B "~ISOSURFACE_TABLE_ERROR()
+Destructor.
+.SH OTHER FUNCTIONS
+.TP 2
+.B "u_long calculate_num_entries
+.br
+.B "(const int num_vert, const int num_colors)
+.RS 5
+Calculate the number of table entries for \fInum_vert\fR vertices
+and \fInum_colors\fR possible colors at each vertex.
+.RE
+.TP 2
+.B "void convert2base
+.br
+.B "(const u_long ival, const u_int base, int * digit, 
+.br
+.B " const u_int max_num_digits)
+.RS 5
+Convert \fIival\fR to base \fIbase\fR number storing the \fIi\fR'th
+digit in \fIdigit[i]\fR.
+.RE
+.TP 2
+.B "void generate_prism
+.B "(const ISOSURFACE_TABLE_POLYHEDRON & base_polyhedron,
+.br
+.B " ISOSURFACE_TABLE_POLYHEDRON & prism)
+.RS 5
+Generate prism polyhedron over the given base polyhedron.
+.RE
+.SH "SEE ALSO"
+.BR "ijkgentable(1), ijkgenpatch(3), xit(5).
+.SH AUTHOR
+Praveen Bhaniramka, Rephael Wenger

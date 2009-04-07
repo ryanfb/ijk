@@ -1,0 +1,44 @@
+.TH IJKTABLEINFO 1 "16 MAY 2008"
+.SH NAME
+ijktableinfo \- output isosurface table information
+.SH SYNOPSIS
+.B ijktableinfo
+.SH DESCRIPTION
+.B ijktableinfo
+is a program to output isosurface table information
+about the isosurface table and the isosurface table polyhedron.
+.SH OPTIONS
+.TP
+.BR "\-poly\ "
+Print out a complete description of the isosurface polyhedron
+including list of vertex coordinates, a list of edges and 
+a list of facets.
+.TP
+.BR "-stat"
+Print out isosurface polyhedron and table statistics
+including number of polyhedron vertices, edges and facets,
+number of table entries, max number of simplices per entry
+and average number of simplices per entry.
+.B "-stat" 
+is the default.
+.TP
+.BR "-isovert"
+Print out list of isosurface vertices.
+.TP
+.BR "-isoedge"
+Print out maximum and average number of isosurface edges per entry.
+.TP
+.BR "-entry \fInum\fR"
+Print entry \fInum\fR from the isosurface table.
+Print number of simplices in the entry and a list
+of simplex vertices.
+Each number in the list is the index of an isosurface vertex.
+.TP
+.BR "-h"
+Print a help message.
+.SH "SEE ALSO"
+.BR ijkgentable(1), ijktable(3), xit(5).
+.SH AUTHOR
+Rephael Wenger
+
+

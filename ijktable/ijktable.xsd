@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- definition of isotable -->
+  <xsd:element name="isotable">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="version" type="versionNum" />
+	<xsd:element name="creationDate" type="xsd:date" />
+	<xsd:element name="dimension" type="dimensionList" />
+	<xsd:element ref="poly" />
+	<xsd:element ref="isoVertices" />
+	<xsd:element ref="table" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of poly -->
+  <xsd:element name="poly">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element ref="vertices" />
+	<xsd:element ref="edges" />
+	<xsd:element ref="facets" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of isoVertices -->
+  <xsd:element name="isoVertices">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="numVertices" type="xsd:nonNegativeInteger" />
+	<xsd:element name="w" minOccurs="0" maxOccurs="unbounded">
+	  <xsd:complexType>
+	    <xsd:sequence>
+	      <xsd:choice>
+		<xsd:element name="inV" type="xsd:nonNegativeInteger" />
+		<xsd:element name="inE" type="xsd:nonNegativeInteger" />
+		<xsd:element name="inF" type="xsd:nonNegativeInteger" />
+		<xsd:element name="c" type="coordType" />
+	      </xsd:choice>
+	      <xsd:element name="L" type="xsd:token" minOccurs="0" />
+	    </xsd:sequence>
+	  </xsd:complexType>
+	</xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of table -->
+  <xsd:element name="table">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="encoding" type="xsd:string" />
+	<xsd:element name="numEntries" type="xsd:nonNegativeInteger" />
+	<xsd:element name="s" type="simplexVertexList" 
+	  minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of vertices -->
+  <xsd:element name="vertices">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="numVertices" type="xsd:nonNegativeInteger" />
+	<xsd:element name="c" type="coordType"
+	  minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of edges -->
+  <xsd:element name="edges">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="numEdges" type="xsd:nonNegativeInteger" />
+	<xsd:element name="v" type="edgeEndpoints"
+	  minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of facets -->
+  <xsd:element name="facets">
+    <xsd:complexType>
+      <xsd:sequence>
+	<xsd:element name="numFacets" type="xsd:nonNegativeInteger" />
+	<xsd:element name="f" type="facetVertexList" 
+	  minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- definition of types -->
+  <xsd:simpleType name="versionNum">
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="([0-9]+)([.][0-9]+)+" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="dimensionList">
+    <xsd:restriction>
+      <xsd:simpleType>
+	<xsd:list itemType="xsd:nonNegativeInteger" />
+      </xsd:simpleType>
+      <xsd:length value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="coordType">
+    <xsd:list itemType="xsd:decimal" />
+  </xsd:simpleType>
+
+  <xsd:simpleType name="nonNegativeIntegerList">
+    <xsd:list itemType="xsd:nonNegativeInteger" />
+  </xsd:simpleType>
+
+  <xsd:simpleType name="vertexList">
+    <xsd:list itemType="xsd:nonNegativeInteger" />
+  </xsd:simpleType>
+
+  <xsd:simpleType name="facetVertexList">
+    <xsd:restriction base="nonNegativeIntegerList">
+      <xsd:minLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="simplexVertexList">
+    <xsd:restriction base="nonNegativeIntegerList">
+      <xsd:minLength value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="edgeEndpoints">
+    <xsd:restriction base="vertexList">
+      <xsd:length value="2" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="faceID" mixed="true">
+    <xsd:sequence>
+      <xsd:element name="L" type="xsd:token" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="isoVertPoint">
+    <xsd:sequence>
+      <xsd:element name="p">
+	<xsd:complexType>
+	  <xsd:sequence>
+	    <xsd:element name="c" type="coordType" />
+	    <xsd:element name="L" type="xsd:token" />
+	  </xsd:sequence>
+	</xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  </xsd:schema>

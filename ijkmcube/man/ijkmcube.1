@@ -1,0 +1,105 @@
+.TH IJKMCUBE 1 "20 JUNE 2008"
+.SH NAME
+ijkmcube \- generate isosurface using Marching Cubes
+.SH SYNOPSIS
+.B ijkmcube
+[-octree] [-region L] [-nep] [-snap D] [-ivol] [-list] [-subsample S]
+[-dir {isotable_directory}] [-off|-iv] [-o {output_filename}] [-stdout]
+[-stdout] [-help] [-time] [-nowrite] {isovalue1 isovalue2 ...} {\fIinput filename\fR}
+.SH DESCRIPTION
+.B ijkmcube
+generates an isosurface using Marching Cubes or one of its variants.
+Input file contains scalar values in NRRD (Nearly Raw Raster Data) format.
+When more than one isovalue is specified,
+the program will generate a separate output file for each.
+.SH OPTIONS
+.TP
+.BR "-octree"
+Create an octree and identify grid cubes intersected by the isosurface
+using the octree.
+Speeds up isosurface generation when more than one isovalue is specified.
+.TP
+.BR "\-region \fIL\fR"
+Divide the grid into regions of \fIL\fRx\fIL\fRx\fIL\fRx... edges 
+and identify grid regions intersected by the isosurface.
+Speeds up isosurface generation when more than one isovalue is specified.
+.TP
+.BR "-nep"
+Use an isosurface table with negative, equals (zero) and positive
+vertex labels.
+The equals vertex labels represents vertices whose scalar value
+equals the isovalue.
+.TP
+.BR "\-snap \fID\fR"
+Apply algorithm
+.B SnapMC.
+Construct the isosurface mesh by setting the scalar value
+of grid vertices within distance \fID\fR of the isosurface
+to the isovalue.
+This effectively "snaps" isosurface vertices onto that grid vertex.
+Construct the mesh using the NEP (negative, equals, positive) 
+lookup table and then move isosurface vertices back 
+to original locations on the isosurface.
+.sp 1
+Distance \fID\fR is between 0.0 and 0.5 and represents
+a fraction of the grid edge.
+.TP
+.BR \-ivol
+Construct an interval volume.
+.TP
+.BR "\-subsample \fIS\fR"
+Subsample the input grid and then construct the isosurface.
+Subsample the input grid so that \fIS\fR grid edges are replaced
+by a single grid edge.
+.TP
+.BR "\-dir \fI{isotable_directory}\fR"
+Set the directory containing the isosurface lookup table \fI.xit\fR 
+(XML Isosurface Table) file.
+An isosurface lookup table file of the appropriate dimension
+and type is required.
+.TP
+.BR \-off
+Output the mesh in Geomview \fI.off\fR format. (Default.)
+.TP
+.BR \-iv
+Output the mesh in OpenInventor \fI.iv\fR format.
+.TP
+.BR "\-o {\fIoutput_filename\fR}"
+Specify the output file name.
+If the output file name is not specified,
+the program constructs an appropriate file name.
+.TP
+.BR \-stdout
+Send the output to standard output.
+.TP
+.BR \-help
+Print a help message.
+.TP
+.BR \-time
+Print program execution time information.
+.TP
+.BR \-nowrite
+Do not write any output file.
+Useful in debugging or in timing executions without creating output.
+.SH NOTES
+.LP
+-- Isosurface generation in 3D requires the \fI.xit\fR (XML Isosurface Table)
+ isosurface lookup table file
+\fIiso.cube.3D.xit\fR.
+.LP
+-- Isosurface generation in 4D requires the xit isosurface lookup table file
+\fIiso.cube.4D.xit\fR.
+.LP
+-- Interval volume generation in 3D requires the xit isosurface 
+lookup table file \fIivol.cube.3D.xit\fR.
+.LP
+-- Isosurface generation in 3D with the options
+.B -nep
+or
+.B "\-snap \fID\fR"
+requires the xit isosurface lookup table file
+\fIiso.nep.cube.3D.xit\fR.
+.SH "SEE ALSO"
+.BR ijkgentable(1), xit(5).
+.SH AUTHOR
+Sundaresan Raman, Rephael Wenger

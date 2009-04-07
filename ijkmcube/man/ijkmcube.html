@@ -1,0 +1,131 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     ijkmcube - generate isosurface using Marching Cubes
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     <B>ijkmcube</B> [-octree] [-region L] [-nep] [-snap D]  [-ivol]  [-
+     list]  [-subsample S] [-dir {isotable_directory}] [-off|-iv]
+     [-o {output_filename}] [-stdout] [-stdout]  [-help]  [-time]
+     [-nowrite] {isovalue1 isovalue2 ...} {<I>input</I> <I>filename</I>}
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     <B>ijkmcube</B> generates an isosurface using Marching Cubes or one
+     of  its variants.  Input file contains scalar values in NRRD
+     (Nearly Raw Raster Data) format.  When more  than  one  iso-
+     value  is  specified,  the  program will generate a separate
+     output file for each.
+
+
+</PRE>
+<H2>OPTIONS</H2><PRE>
+     <B>-octree</B>
+          Create an octree and identify grid cubes intersected by
+          the  isosurface using the octree.  Speeds up isosurface
+          generation when more than one isovalue is specified.
+
+     -<B>region</B> <I>L</I>
+          Divide the grid into regions  of  <I>L</I>x<I>L</I>x<I>L</I>x...  edges  and
+          identify  grid  regions  intersected by the isosurface.
+          Speeds up isosurface generation when more than one iso-
+          value is specified.
+
+     <B>-nep</B> Use an isosurface table with  negative,  equals  (zero)
+          and  positive  vertex labels.  The equals vertex labels
+          represents vertices whose scalar value equals the  iso-
+          value.
+
+     -<B>snap</B> <I>D</I>
+          Apply algorithm <B>SnapMC.</B> Construct the  isosurface  mesh
+          by  setting  the  scalar  value of grid vertices within
+          distance <I>D</I> of the isosurface  to  the  isovalue.   This
+          effectively  "snaps" isosurface vertices onto that grid
+          vertex.  Construct the mesh using  the  NEP  (negative,
+          equals, positive) lookup table and then move isosurface
+          vertices back to original locations on the isosurface.
+
+          Distance <I>D</I> is between 0.0  and  0.5  and  represents  a
+          fraction of the grid edge.
+
+     -<B>ivol</B>
+          Construct an interval volume.
+
+     -<B>subsample</B> <I>S</I>
+          Subsample the input grid and then construct the isosur-
+          face.   Subsample  the  input grid so that <I>S</I> grid edges
+          are replaced by a single grid edge.
+
+     -<B>dir</B> {<I>isotable</I>_<I>directory</I>}
+          Set the  directory  containing  the  isosurface  lookup
+          table  .<I>xit</I> (XML Isosurface Table) file.  An isosurface
+          lookup table file of the appropriate dimension and type
+          is required.
+
+     -<B>off</B> Output the mesh in Geomview .<I>off</I> format. (Default.)
+
+     -<B>iv</B>  Output the mesh in OpenInventor .<I>iv</I> format.
+
+     -<B>o</B> <B>{</B><I>output</I>_<I>filename</I>}
+          Specify the output file name.  If the output file  name
+          is not specified, the program constructs an appropriate
+          file name.
+
+     -<B>stdout</B>
+          Send the output to standard output.
+
+     -<B>help</B>
+          Print a help message.
+
+     -<B>time</B>
+          Print program execution time information.
+
+     -<B>nowrite</B>
+          Do not write any output file.  Useful in  debugging  or
+          in timing executions without creating output.
+
+
+</PRE>
+<H2>NOTES</H2><PRE>
+     -- Isosurface generation in 3D requires the .<I>xit</I>  (XML  Iso-
+     surface Table)
+      isosurface lookup table file <I>iso</I>.<I>cube</I>.<I>3D</I>.<I>xit</I>.
+
+     -- Isosurface generation in 4D requires the  xit  isosurface
+     lookup table file <I>iso</I>.<I>cube</I>.<I>4D</I>.<I>xit</I>.
+
+     -- Interval volume generation in 3D requires the xit isosur-
+     face lookup table file <I>ivol</I>.<I>cube</I>.<I>3D</I>.<I>xit</I>.
+
+     -- Isosurface generation in 3D  with  the  options  <B>-nep</B>  or
+     -<B>snap</B>  <I>D</I>  requires  the  xit  isosurface  lookup  table file
+     <I>iso</I>.<I>nep</I>.<I>cube</I>.<I>3D</I>.<I>xit</I>.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>ijkgentable(1),</B><B>xit(5)</B>.
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+     Sundaresan Raman, Rephael Wenger
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

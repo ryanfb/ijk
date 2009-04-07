@@ -1,0 +1,10 @@
+
+ijkmcube:
+
+Version 0.2.6: Implemented  -octree and -region option with -snap option.
+
+Version 0.2.7: Revised -snap option to break snapping ties by smallest
+vertex index.  Program ijkmcube with "-snap D" or "-snap D -region L"
+or "-snap D -octree" options should produce same set of isosurface vertices
+and simplices.  (Vertices and simplices may not be in the same order.)
+

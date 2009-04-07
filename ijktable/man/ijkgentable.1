@@ -1,0 +1,60 @@
+.TH IJKGENTABLE 1 "16 MAY 2008"
+.SH NAME
+ijkgentable \- generate isosurface table
+.SH SYNOPSIS
+.B ijkgentable 
+[-d \fIdimension\fR] [-ivol] [-nep] 
+[-poly {\fIcube|pyramid|simplex|sprism\fR}]
+[-o {\fIoutput_filename\fR}]
+.RB "[\-hqv]"
+[-V <n>]
+.SH DESCRIPTION
+.B ijkgentable
+is a program to generate a table of isosurface patches
+for cubes or simplices in arbitrary dimensions.
+Isosurface patches for each of the 2^numv +/- vertex sign patterns
+are stored in the table where numv is the number of polyhedron vertices.
+.SH OPTIONS
+.TP
+.BR "\-d\ " "\fIdimension\fR"
+Set dimension to
+.I dimension.
+.TP
+.BR "-ivol"
+Compute the interval volume.
+.TP
+.BR "-nep"
+Use an isosurface table with negative, equals (zero) and positive
+vertex labels.
+The equals vertex labels represents vertices whose scalar value
+equals the isovalue.
+.TP
+.BR \-poly {\fIcube|pyramid|simplex|sprism\fR}
+Set polyhedron to cube (hypercube,) pyramid, simplex
+or prism with simplex base.
+Default is cube.
+.TP
+.BR \-h
+Print help message (and exit.)
+.TP
+.BR \-q
+Quiet mode.  Suppress messages.
+.TP
+.BR \-v
+Verbose mode.  Print messages.
+.TP
+.BR "\-V\ " <\fIn\fR>
+Verbose mode.  Print message after every 
+<\fIn\fR> table entries.
+.SH NOTES
+Tables for hypercubes of dimension five or higher would have 2^32 or more
+entries and cannot be generated.
+Tables for pyramids of dimension six or higher would have 2^32+1 or more
+entries and cannot be generated.
+Tables for simplices can be generated up to approximately dimension 20 
+depending on your processor speed and memory.
+Interval volumes cannot be generated with the -nep flag.
+.SH "SEE ALSO"
+.BR ijkgenpatch, ijktable(3), xit(5).
+.SH AUTHOR
+Praveen Bhaniramka, Sundaresan Raman, Rephael Wenger

@@ -1,0 +1,13 @@
+
+Installation directions for programs in ijktable.
+
+Requires libary expat available from expat.sourceforge.net.
+
+Install using cmake.
+Type "ccmake ." and "c" twice to configure.
+Check that IJK_DIR is set to the main ijk directory.
+(If not, modify the path for IJK_DIR.)
+Press "g" to generate the Makefile and exit.
+Type "cmake .".
+Type "make" to create executables.
+Type "make install" to install executables in ${IJK_DIR}/bin.

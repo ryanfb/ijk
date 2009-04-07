@@ -1,0 +1,13 @@
+
+Installation directions for NrrdIO.
+
+Install using cmake.
+Type "ccmake ." and "c" twice to configure.
+Check that IJK_DIR is set to the main directory under which you want 
+to install the library ITKNrrdIO.
+(If not, modify the path for IJK_DIR.)
+Press "g" to generate the Makefile and exit.
+Type "cmake .".
+Type "make" to create "libITKNrrdIO.a".
+Type "make install" to install "libITKNrrdIO.a" in directory ${IJK_DIR}/lib.
+

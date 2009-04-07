@@ -1,0 +1,608 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     ISOSURFACE_TABLE - isosurface table class
+     ISOSURFACE_TABLE_POLYHEDRON - polyhedron class
+     ISOSURFACE_VERTEX - isosurface vertex class
+     ISOSURFACE_TABLE_ERROR - error message class
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     #include "ijktable.h"
+     using namespace IJKTABLE;
+     class ISOSURFACE_TABLE_POLYHEDRON;
+     class ISOSURFACE_VERTEX;
+     class ISOSURFACE_TABLE;
+     class ISOSURFACE_TABLE_ERROR;
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     Each isosurface or interval volume lookup table is based  on
+     a  convex  polyhedron  in  some  dimension  (not necessarily
+     three.)  Each table entry corresponds to a set of labels  (-
+     /+) or (-/=/+) or (-/*/+) on the vertices of the polyhedron.
+     Each table entry contains a set of simplices forming an iso-
+     surface patch.
+
+
+</PRE>
+<H2>CLASS ISOSURFACE_TABLE_POLYHEDRON</H2><PRE>
+     Included are routines for setting and getting the polyhedron
+     vertices and edges and for creating hypercubes and simplices
+     in arbitrary dimensions.  The polyhedron is defined  by  its
+     vertices, edges and facets.  No other faces are used.
+
+  <B>CONSTRUCTORS,</B> <B>DESTRUCTOR,</B> <B>COPY</B>
+     Constructor, destructor and copy member functions for  class
+     <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>.
+
+     <B>ISOSURFACE_TABLE_POLYHEDRON(const</B> <B>int</B> <B>d)</B>
+          Constructor.  Initialize polyhedron dimension to <I>d</I>.
+
+     <B>ISOSURFACE_TABLE_POLYHEDRON</B>
+               <B>(const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>init)</B>
+          Constructor.  Set polyedron to <I>init</I>.
+
+     <B>~ISOSURFACE_TABLE_POLYHEDRON()</B>
+          Destructor.
+
+     <B>const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>operator</B> <B>=</B>
+               <B>(const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;)</B>
+          Copy operator.
+
+  <B>GET</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member   functions   to   get   information    from    class
+     <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>.
+
+     <B>int</B> <B>Dimension()</B> <B>const</B>
+          Return polyhedron dimension.
+
+     <B>int</B> <B>NumVertices()</B> <B>const</B>
+          Return number of polyhedron vertices.
+
+     <B>int</B> <B>NumEdges()</B> <B>const</B>
+          Return number of polyhedron edges.
+
+     <B>int</B> <B>NumFacets()</B> <B>const</B>
+          Return number of polyhedron facets.
+
+     <B>int</B> <B>NumFacetVertices(const</B> <B>FACET_INDEX</B> <B>jf)</B> <B>const</B>
+          Return number of vertices in facet <I>jf</I>.
+
+     <B>int</B> <B>VertexCoord(const</B> <B>int</B> <B>iv,</B> <B>const</B> <B>int</B> <B>ic)</B> <B>const</B>
+          Return coordinate <I>ic</I> of vertex <I>iv</I>.
+
+     <B>int</B> <B>EdgeEndpoint(const</B> <B>EDGE_INDEX</B> <B>ie,</B> <B>const</B> <B>int</B> <B>j)</B> <B>const</B>
+          Return vertex index of endpoint <I>j</I> of edge <I>ie</I>. The value
+          of <I>j</I> is either 0 or 1.
+
+     <B>int</B> <B>MidpointCoord(const</B> <B>EDGE_INDEX</B> <B>ie,</B> <B>const</B> <B>int</B> <B>ic)</B> <B>const</B>
+          Return coordinate <I>ic</I> of the midpoint of edges <I>ie</I>.  Note
+          that  all  vertex coordinates must be even so that mid-
+          point coordinates are integers.
+
+     <B>FACET</B> <B>Facet(const</B> <B>FACET_INDEX</B> <B>jf)</B> <B>const</B>
+          Return an integer encoding the  vertices  contained  in
+          the  facet.   The  k'th  polyhedron  vertex lies on the
+          facet if the k'th bit is a 1.
+
+     <B>bool</B> <B>FacetVertexFlag(const</B> <B>FACET_INDEX</B> <B>jf,</B> <B>const</B> <B>int</B> <B>iv)</B> <B>const</B>
+          Return  <I>true</I>  if  facet  <I>jf</I>  contains vertex <I>iv</I>. Return
+          <I>false</I> otherwise.
+
+  <B>SET</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member   functions   to    set    information    in    class
+     <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>.
+
+     <B>void</B> <B>SetDimension(const</B> <B>int</B> <B>d)</B>
+          Set the polyhedron dimension.
+
+     <B>void</B> <B>SetNumVertices(const</B> <B>int</B> <B>numv)</B>
+          Set the number of polyhedron vertices.
+
+     <B>void</B> <B>SetNumEdges(const</B> <B>int</B> <B>nume)</B>
+          Set the number of polyhedron edges.
+
+     <B>void</B> <B>SetNumFacets(const</B> <B>int</B> <B>numf)</B>
+          Set the number of polyhedron facets.
+
+     <B>void</B> <B>SetSize(const</B> <B>int</B> <B>numv,</B> <B>const</B> <B>int</B> <B>nume,</B> <B>const</B> <B>int</B> <B>numf)</B>
+          Set  the  number  of  polyhedron  vertices,  edges  and
+          facets.
+
+     <B>void</B> <B>SetVertexCoord(const</B> <B>int</B> <B>iv,</B> <B>const</B> <B>int</B> <B>ic,</B> <B>const</B> <B>int</B> <B>coord)</B>
+          Set coordinate <I>ic</I> of vertex <I>iv</I> to <I>coord</I>. Note that ver-
+          tex coodinates MUST BE even, so that edge midpoints are
+          integers.  Note that <I>SetNumVertices</I>() or <I>SetSize</I>() must
+          be called before <I>SetVertexCoord</I>().
+
+     <B>void</B> <B>SetEdge(const</B> <B>EDGE_INDEX</B> <B>ie,</B> <B>const</B> <B>int</B> <B>iv0,</B> <B>const</B> <B>int</B> <B>iv1)</B>
+          Set  the  endpoints of edge <I>ie</I> to vertices <I>iv0</I> and <I>iv1</I>.
+          Note that <I>SetNumEdges</I>() or  <I>SetSize</I>()  must  be  called
+          before <I>SetEdge</I>().
+
+     <B>void</B> <B>SetFacetVertex(const</B> <B>FACET_INDEX</B> <B>jf,</B> <B>const</B> <B>int</B> <B>iv,</B>
+                         <B>const</B> <B>bool</B> <B>in_facet)</B>
+          Set the bit representing whether facet <I>jf</I> contains ver-
+          tex <I>iv</I> to <I>in</I>_<I>facet</I>.  If <I>in</I>_<I>facet</I> is true, then facet <I>jf</I>
+          contains vertex  <I>iv</I>.  Note that <I>SetNumFacets</I>() or  <I>Set-</I>
+          <I>Size</I>() must be called before <I>SetFacetVertex</I>().
+
+  <B>GENERATE</B> <B>CUBES,</B> <B>SIMPLICES,</B> <B>PYRAMIDS</B>
+     Member functions which generate all the vertices, edges  and
+     facets of cubes, simplices or pyramids.
+
+     <B>void</B> <B>GenCube(const</B> <B>int</B> <B>d)</B>
+          Generate a hypercube of dimension <I>d</I>. Generates all ver-
+          tices  and  edges of the hypercube.  Vertex coordinates
+          are 0 and 2.  Vertices are indexed in increasing  lexi-
+          cographical  order, i.e., (0 0 0), (2 0 0), (0 2 0), (2
+          2 0), (0 0 2), etc.  Edges are  indexed  in  increasing
+          lexicographical  order  by  their midpoint, i.e., first
+          come edges whose midpoints have last coordinate 0, then
+          edges  whose  midpoints  have  last  coordinate 1, then
+          edges whose midpoints have last coordinate 2.
+
+     <B>void</B> <B>GenPyramid(const</B> <B>int</B> <B>d)</B>
+          Generate a pyramid of dimension <I>d</I>. Generates  all  ver-
+          tices  and edges of the hypercube.  Base vertex coordi-
+          nates are 0 and 4.  Apex coordinates are all  2,  i.e.,
+          (2  2  2).   Base  vertices are listed first, then apex
+          vertex.  Base vertices are indexed in increasing  lexi-
+          cographical  order, i.e., (0 0 0), (4 0 0), (0 4 0), (4
+          4 0), (0 0 4), etc.  Base edges are listed first,  then
+          edges  incident on the apex.  Base edges are indexed in
+          increasing lexicographical  order  by  their  midpoint,
+          i.e.,  first come edges whose midpoints have last coor-
+          dinate 0, then edges whose midpoints have last  coordi-
+          nate 1, then edges whose midpoints have last coordinate
+          2.  Apex edges are indexed in the  same  order  as  the
+          base  vertices, i.e. in 3D, the order of the base edges
+          is (0, 4), (1, 4), (2, 4), (3, 4), where 4 is the index
+          of the apex.
+
+     <B>void</B> <B>GenSimplex(const</B> <B>int</B> <B>d)</B>
+          Generate a simplex of dimension <I>d</I>. Generates  all  ver-
+          tices and edges of the simplex.  One vertex is the ori-
+          gin, (0, 0, ..., 0).  All other  vertices  lie  on  the
+          coordinate axes, i.e., (2, 0, 0).  Vertices are indexed
+          in increasing lexicographical order, i.e., (0 0  0  0),
+          (2  0 0 0), (0 2 0 0), (0 0 2 0), (0 0 0 2).  Edges are
+          indexed in increasing lexicographical  order  by  their
+          endpoint  indices, i.e., (0 1), (0 2), (0 3), (0 4), (1
+          2), (1 3), (1 4), (2 3), (2 4), (3 4).
+
+  <B>CHECK</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member functions to check validity  or  consistency  of  the
+     date in class <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>.
+
+     <B>bool</B> <B>CheckDimension()</B> <B>const</B>
+          Check polyhedron dimension is valid.  Returns <I>false</I>  if
+          polyhedron dimension is invalid.
+
+     <B>bool</B> <B>Check(ERROR</B> <B>&amp;</B> <B>error)</B> <B>const</B>
+          Check polyhedron specification is consistent.   Returns
+          <I>false</I> and an error message in class <I>error</I> if polyhedron
+          specification is inconsistent.
+
+
+</PRE>
+<H2>CLASS ISOSURFACE_VERTEX</H2><PRE>
+     Included are routines for  setting  and  getting  isosurface
+     vertex type, face index and labels.
+
+  <B>ISOSURFACE_VERTEX_TYPE</B>
+     Definition of isosurface vertex type.
+
+     <B>typedef</B> <B>enum</B> <B>{VERTEX,</B> <B>EDGE,</B> <B>FACET,</B> <B>POINT}</B> <B>ISOSURFACE_VERTEX_TYPE;</B>
+          Type  of  isosurface vertex.  <I>VERTEX</I> represents an iso-
+          surface vertex which is on a  polyhedron  vertex,  <I>EDGE</I>
+          represents  an  isosurface vertex lying on a polyhedron
+          edge, <I>FACET</I> represents an isosurface vertex lying on  a
+          polyhedron  facet,  and  <I>POINT</I> represents an isosurface
+          vertex lying anywhere in the polyhedron.
+
+  <B>CONSTRUCTOR</B> <B>AND</B> <B>DESTRUCTOR</B>
+     Constructor and destructor for class <I>ISOSURFACE</I>_<I>VERTEX</I>.
+
+     <B>ISOSURFACE_VERTEX()</B>
+          Constructor.
+
+     <B>~ISOSURFACE_VERTEX()</B>
+          Destructor.
+
+  <B>GET</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member   functions   to   get   information    from    class
+     <I>ISOSURFACE</I>_<I>VERTEX</I>.
+
+     <B>ISOSURFACE_VERTEX_TYPE</B> <B>Type()</B> <B>const</B>
+          Return the type of the isosurface vertex.
+
+     <B>int</B> <B>Face()</B> <B>const</B>
+          Return the index of the face containing the  isosurface
+          vertex.   The  face  containing the vertex depends upon
+          the  isosurface  vertex  type  and  this  index.    For
+          instance, if the isosurface vertex type is EDGE and the
+          index  is  3,  then  the  isosurface  vertex  lies   on
+          polyhedron  edge  3.   If the isosurface vertex type is
+          vertex and the index is 3, then the  isosurface  vertex
+          lies  on  polyhedron vertex 3.  The face index is unde-
+          fined if the isosurface vertex type is POINT.
+
+     <B>int</B> <B>NumCoord()</B> <B>const</B>
+          Return the number of coordinates (the dimension) of the
+          isosurface vertex.  Defined only if the isosurface ver-
+          tex type is POINT.
+
+     <B>COORD_TYPE</B> <B>Coord(const</B> <B>int</B> <B>ic)</B> <B>const</B>
+          Return the <I>ic</I>'th coordinate of the  isosurface  vertex.
+          Defined only if the isosurface vertex type is POINT.
+
+     <B>std::string</B> <B>Label()</B> <B>const</B>
+          Return the isosurface vertex label.  This label can  be
+          any string.
+
+     <B>bool</B> <B>IsLabelSet()</B> <B>const</B>
+          Return <I>true</I> if the label is set and <I>false</I> otherwise.
+
+  <B>SET</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member   functions   to    set    information    in    class
+     <I>ISOSURFACE</I>_<I>VERTEX</I>.
+
+     <B>void</B> <B>SetType(const</B> <B>ISOSURFACE_VERTEX_TYPE</B> <B>t)</B>
+          Set the isosurface vertex type.
+
+     <B>void</B> <B>SetFace(const</B> <B>int</B> <B>index)</B>
+          Set the index of the  face  containing  the  isosurface
+          vertex.
+
+     <B>void</B> <B>SetNumCoord(const</B> <B>int</B> <B>numc)</B>
+          Set the number of coordinates of the isosurface vertex.
+
+     <B>void</B> <B>SetCoord(const</B> <B>int</B> <B>ic,</B> <B>const</B> <B>COORD_TYPE</B> <B>c)</B>
+          Set <I>ic</I>'th vertex coordinate to coordinate <I>c</I>.
+
+     <B>void</B> <B>SetLabel(const</B> <B>std::string</B> <B>&amp;</B> <B>s)</B>
+          Set the label of the isosurface vertex.
+
+
+</PRE>
+<H2>CLASS ISOSURFACE_TABLE</H2><PRE>
+     Included are routines for setting and getting the isosurface
+     polyhedron, the isosurface vertices and the isosurface table
+     entries.  Each table entry consists  of  a  list  of  (<I>d</I>-1)-
+     dimensional simplices.  Each simplex contains <I>d</I> simplex ver-
+     tices.  Simplex vertices can be given by  their  coordinates
+     or  by  the  polyhedron vertex, edge or facet containing the
+     vertex.  This separates the computation  of  vertex  coordi-
+     nates from the generation of the isosurface simplices.
+
+  <B>CONSTRUCTORS</B> <B>AND</B> <B>DESTRUCTOR</B>
+     Constructor, destructor and copy member functions for  class
+     <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>ISOSURFACE_TABLE(const</B> <B>int</B> <B>d)</B>
+          Constructor.  Initialize polyhedron dimension and  sim-
+          plex dimension to <I>d</I>.
+
+     <B>ISOSURFACE_TABLE(const</B> <B>int</B> <B>poly_dimension,</B>
+                      <B>const</B> <B>int</B> <B>simplex_dimension)</B>
+          Constructor.   Initialize   polyhedron   dimension   to
+          <I>poly</I>_<I>dimension</I>     and     simplex     dimension     to
+          <I>simplex</I>_<I>dimension</I>.  Isosurfaces have  <I>simplex</I>_<I>dimension</I>
+          equal   to  <I>poly</I>_<I>dimension</I>-1.   Interval  volumes  have
+          <I>simplex</I>_<I>dimension</I> equal to <I>poly</I>_<I>dimension</I>.
+
+     <B>~ISOSURFACE_TABLE()</B>
+          Destructor.
+
+  <B>GET</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member   functions   to   get   information    from    class
+     <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>ENCODING</B> <B>Encoding()</B> <B>const</B>
+          Return the encoding of  the  isosurface  table.   Valid
+          encodings are <I>BINARY</I>, <I>BASE3</I> and <I>NONSTANDARD</I>.
+
+     <B>ENCODING</B> <B>EncodingName()</B> <B>const</B>
+          Return the string storing the encoding name.   Used  to
+          store names of non-standard encodings.
+
+     <B>static</B> <B>std::string</B> <B>StandardEncodingName(const</B> <B>ENCODING</B> <B>encoding)</B>
+          Return the string with the encoding name for a standard
+          encoding.  Returns string "BINARY" for encoding  <I>BINARY</I>
+          and string "BASE3" for encoding <I>BASE3</I>.
+
+     <B>const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>Polyhedron()</B> <B>const</B>
+          Return   (<I>const</I>)   reference   to   isosurface    table
+          polyhedron.
+
+     <B>const</B> <B>ISOSURFACE_VERTEX</B> <B>&amp;</B> <B>IsosurfaceVertex(const</B> <B>int</B> <B>i)</B> <B>const</B>
+          Return (<I>const</I>) reference to <I>i</I>'th isosurface vertex.
+
+     <B>int</B> <B>Dimension()</B> <B>const</B>
+          Return dimension of isosurface table polyhedron.
+
+     <B>int</B> <B>SimplexDimension()</B> <B>const</B>
+          Return dimension of isosurface table simplices.
+
+     <B>int</B> <B>NumVerticesPerSimplex()</B> <B>const</B>
+          Return number of vertices per simplex.  Number of  ver-
+          tices per simplex equals <I>SimplexDimension</I>()+1.
+
+     <B>int</B> <B>NumTableEntries()</B> <B>const</B>
+          Return number of entries in isosurface table.
+
+     <B>int</B> <B>NumSimplices(const</B> <B>int</B> <B>it)</B> <B>const</B>
+          Return number of simplices in entry <I>it</I>.
+
+     <B>int</B> <B>SimplexVertex(const</B> <B>int</B> <B>it,</B> <B>const</B> <B>int</B> <B>is,</B> <B>const</B> <B>int</B> <B>k)</B> <B>const</B>
+          Return  the <I>k</I>'th simplex vertex in simplex Iis in table
+          entry <I>it</I>.  Returns an index to an isosurface vertex.
+
+     <B>int</B> <B>MaxNumVertices()</B> <B>const</B>
+          Return the maximum number of vertices  permitted  in  a
+          polyhedron.  Even tables for polyhedra of this size are
+          probably impossible to compute or store.
+
+     <B>bool</B> <B>IsTableAllocated()</B> <B>const</B>
+          Return true if isosurface table has already been  allo-
+          cated.  Note that the polyhedron cannot be changed once
+          the table has been allocated.  The table must be  allo-
+          cated  once and only once before storing the isosurface
+          patches in the table.
+
+  <B>SET</B> <B>POLYHEDRON</B> <B>FUNCTIONS</B>
+     Member functions to  set  polyhedron  information  in  class
+     <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>void</B> <B>SetDimension(const</B> <B>int</B> <B>d)</B>
+          Set the polyhedron dimension to be <I>d</I>.
+
+     <B>void</B> <B>SetNumPolyVertices(const</B> <B>int</B> <B>numv)</B>
+          Set number of polyhedron vertices to <I>numv</I>.
+
+     <B>void</B> <B>SetNumPolyEdges(const</B> <B>int</B> <B>nume)</B>
+          Set number of polyhedron edges to <I>nume</I>.
+
+     <B>void</B> <B>SetNumPolyFacets(const</B> <B>int</B> <B>numf)</B>
+          Set number of polyhedron facets to <I>numf</I>.
+
+     <B>void</B> <B>SetPolySize(const</B> <B>int</B> <B>numv,</B> <B>const</B> <B>int</B> <B>nume,</B> <B>const</B> <B>int</B> <B>numf)</B>
+          Set  number  of polyhedron vertices to <I>numv</I>, set number
+          of  polyhedron  edges  to  <I>nume</I>  and  set   number   of
+          polyhedron facets to <I>numf</I>.
+
+     <B>void</B> <B>SetPolyVertexCoord(const</B> <B>int</B> <B>iv,</B> <B>const</B> <B>int</B> <B>ic,</B>
+                             <B>const</B> <B>int</B> <B>coord)</B>
+
+          Set coordinate <I>ic</I> of polyhedron  vertex  <I>iv</I>  to  <I>coord</I>.
+          Note that <I>SetPolyNumVertices</I>() or <I>SetPolySize</I>() must be
+          called before <I>SetPolyVertexCoord</I>().
+
+     <B>void</B> <B>SetPolyEdge(const</B> <B>EDGE_INDEX</B> <B>ie,</B> <B>const</B> <B>int</B> <B>iv0,</B>
+                      <B>const</B> <B>int</B> <B>iv1)</B>
+          Set the endpoints of polyhedron edge <I>ie</I> to vertices <I>iv0</I>
+          and  <I>iv1</I>.  Note that <I>SetNumPolyEdges</I>() or <I>SetPolySize</I>()
+          must be called before <I>SetPolyEdge</I>().
+
+     <B>void</B> <B>SetPolyFacetVertex(const</B> <B>int</B> <B>jf,</B> <B>const</B> <B>int</B> <B>iv,</B>
+                             <B>const</B> <B>bool</B> <B>in_facet)</B>
+          Set the bit representing whether facet <I>jf</I> contains ver-
+          tex <I>iv</I> to <I>in</I>_<I>facet</I>.  If <I>in</I>_<I>facet</I> is true, then facet <I>jf</I>
+          contains vertex  <I>iv</I>.  Note that  <I>SetNumPolyFacets</I>()  or
+          <I>SetPolySize</I>()  must  be  called before <I>SetPolyFacetVer-</I>
+          <I>tex</I>().
+
+     <B>void</B> <B>Set(const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>polyhedron)</B>
+          Set the isosurface table polyhedron to <I>polyhedron</I>.
+
+  <B>SET</B> <B>ISOSURFACE</B> <B>VERTEX</B> <B>FUNCTIONS</B>
+     Member functions to set  isosurface  vertex  information  in
+     class <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>void</B> <B>SetNumIsosurfaceVertices(const</B> <B>int</B> <B>num_vertices)</B>
+          Set number of isosurface vertices to <I>num</I>_<I>vertices</I>.
+
+     <B>void</B> <B>SetIsosurfaceVertexType</B>
+       <B>(const</B> <B>int</B> <B>i,</B>
+        <B>const</B> <B>ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE</B> <B>t)</B>
+          Set isosurface vertex type of vertex <I>i</I> to type <I>t</I>.
+
+     <B>void</B> <B>SetIsoVertexFace(const</B> <B>int</B> <B>i,</B> <B>const</B> <B>int</B> <B>index)</B>
+          Set face index of isosurface vertex <I>i</I>.
+
+     <B>void</B> <B>SetIsoVertexNumCoord(const</B> <B>int</B> <B>i,</B> <B>const</B> <B>int</B> <B>numc)</B>
+          Set the number of coordinates of isosurface vertex <I>i</I>.
+
+     <B>void</B> <B>SetIsoVertexCoord</B>
+       <B>(const</B> <B>int</B> <B>i,</B> <B>const</B> <B>int</B> <B>ic,</B>
+        <B>const</B> <B>ISOSURFACE_VERTEX::ISOSURFACE_VERTEX_TYPE</B> <B>t)</B>
+          Set the coordinate <I>ic</I> of isosurface vertex <I>i</I>.
+
+     <B>void</B> <B>SetIsoVertexLabel(const</B> <B>int</B> <B>i,</B> <B>const</B> <B>std::string</B> <B>&amp;</B> <B>s)</B>
+          Set the label of isosurface vertex <I>i</I>.
+
+  <B>SET</B> <B>LOOKUP</B> <B>TABLE</B> <B>FUNCTIONS</B>
+     Member functions to set lookup table  information  in  class
+     <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>void</B> <B>SetSimplexDimension(const</B> <B>int</B> <B>d)</B>
+          Set the simplex dimension to be <I>d</I>.
+
+     <B>void</B> <B>SetEncoding(const</B> <B>ENCODING</B> <B>encoding)</B>
+          Set the table encoding to be <I>encoding</I>.
+
+     <B>void</B> <B>SetBindaryEncoding()</B>
+          Set the table encoding to be <I>BINARY</I>.
+
+     <B>void</B> <B>SetBase3Encoding()</B>
+          Set the table encoding to be <I>BASE3</I>.
+
+     <B>void</B> <B>SetNonstandardEncoding(const</B> <B>&amp;</B> <B>std::name)</B>
+          Set the table encoding to be <I>NONSTANDARD</I> and the encod-
+          ing string name to be <I>name</I>.
+
+     <B>void</B> <B>SetNumTableEntries(const</B> <B>int</B> <B>num_table_entries)</B>
+          Set number of isosurface table entries.
+
+     <B>void</B> <B>SetNumSimplices(const</B> <B>int</B> <B>it,</B> <B>const</B> <B>int</B> <B>nums)</B>
+          Set number of simplices in table entry <I>it</I>.
+
+     <B>void</B> <B>SetSimplexVertex(const</B> <B>int</B> <B>it,</B> <B>const</B> <B>int</B> <B>is,</B>
+                         <B>const</B> <B>int</B> <B>iv,</B> <B>const</B> <B>EDGE_INDEX</B> <B>isov)</B>
+          Set index of of vertex <I>iv</I> of simplex <I>is</I> of table  entry
+          <I>it</I> to isosurface vertex <I>isov</I>.
+
+  <B>GENERATE</B> <B>POLYHEDRA</B>
+     Member functions to generate cubes, simplices or pyramids.
+
+     <B>void</B> <B>GenCube(const</B> <B>int</B> <B>d)</B>
+          Generate a hypercube of dimension <I>d</I>. Vertices and edges
+          are         indexed        as        in        function
+          <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>::<I>GenCube</I>().
+
+     <B>void</B> <B>GenPyramid(const</B> <B>int</B> <B>d)</B>
+          Generate a pyramid of dimension <I>d</I>. Vertices  and  edges
+          are         indexed        as        in        function
+          <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>::<I>GenPyramid</I>().
+
+     <B>void</B> <B>GenSimplex(const</B> <B>int</B> <B>d)</B>
+          Generate a simplex of dimension <I>d</I>. Vertices  and  edges
+          are         indexed        as        in        function
+          <I>ISOSURFACE</I>_<I>TABLE</I>_<I>POLYHEDRON</I>::<I>GenSimplex</I>().
+
+  <B>GENERATE</B> <B>ISOSURFACE</B> <B>VERTICES</B>
+     Functions to generate isosurface  vertices  from  polyhedron
+     vertices,  edges  or  facets.  Function <I>SetNumIsosurfaceVer-</I>
+     <I>tices</I>() must be called before any of these functions.
+
+     <B>void</B> <B>StorePolyVerticesAsIsoVertices(const</B> <B>int</B> <B>vstart)</B>
+          Store  polyhedron  vertices  as  isosurface   vertices,
+          starting  at  isosurface  vertex <I>vstart</I>.  The number of
+          isosurface vertices must be at least  <I>vstart</I>  plus  the
+          number of polyhedron vertices.
+
+     <B>void</B> <B>StorePolyEdgesAsIsoVertices(const</B> <B>int</B> <B>vstart)</B>
+          Generate an isosurface vertex for each polyhedron edge,
+          starting  at  isosurface  vertex <I>vstart</I>.  The number of
+          isosurface vertices must be at least  <I>vstart</I>  plus  the
+          number of polyhedron edges.
+
+     <B>void</B> <B>StorePolyVerticesAsIsoVertices(const</B> <B>int</B> <B>vstart)</B>
+          Generate  an  isosurface  vertex  for  each  polyhedron
+          facet,  starting  at  isosurface  vertex  <I>vstart</I>.   The
+          number of isosurface vertices must be at  least  <I>vstart</I>
+          plus the number of polyhedron facets.
+
+  <B>CHECK</B> <B>MEMBER</B> <B>FUNCTIONS</B>
+     Member functions to check validity  or  consistency  of  the
+     date in class <I>ISOSURFACE</I>_<I>TABLE</I>.
+
+     <B>bool</B> <B>CheckDimension(const</B> <B>int</B> <B>d)</B> <B>const</B>
+          Check dimension <I>d</I> is a valid polyhedron dimension.
+
+     <B>bool</B> <B>CheckDimension()</B> <B>const</B>
+          Check current polyhedron dimension is valid.
+
+     <B>bool</B> <B>CheckTable(ERROR</B> <B>&amp;</B> <B>error)</B> <B>const</B>
+          Check isosurface  table  specification  is  consistent.
+          Return <I>false</I> and an error message in class <I>error</I> if the
+          table specification is inconsistent.
+
+     <B>bool</B> <B>Check(ERROR</B> <B>&amp;</B> <B>error)</B> <B>const</B>
+          Check that isosurface polyhedron and  isosurface  table
+          specifications  are  consistent.   Return  <I>false</I> and an
+          error message in class <I>error</I>  if  an  inconsistency  is
+          detected.
+
+
+</PRE>
+<H2>CLASS ISOSURFACE_TABLE_ERROR</H2><PRE>
+     Functions      in      ISOSURFACE_TABLE_POLYHEDRON       and
+     ISOSURFACE_TABLE       throw       the      error      class
+     ISOSURFACE_TABLE_ERROR upon detecting an error.
+
+     <B>ISOSURFACE_TABLE_ERROR()</B>
+          Constructor.  No error message.
+
+     <B>ISOSURFACE_TABLE_ERROR(const</B> <B>char</B> <B>*</B> <B>error_msg)</B>
+     <B>ISOSURFACE_TABLE_ERROR(const</B> <B>std::string</B> <B>&amp;</B> <B>error_msg)</B>
+          Constructors.   Set  the   first   error   message   to
+          <I>error</I>_<I>msg</I>.
+
+     <B>int</B> <B>NumMessage()</B> <B>const</B>
+          Return the number of error messages.
+
+     <B>std::string</B> <B>Message(const</B> <B>int</B> <B>i)</B>
+          Return the <I>i</I>'th error message.
+
+     <B>void</B> <B>AddMessage(const</B> <B>std::string</B> <B>&amp;</B> <B>error_msg)</B>
+     <B>void</B> <B>AddMessage(const</B> <B>char</B> <B>*</B> <B>error_msg)</B>
+          Add another error message.
+
+     <B>~ISOSURFACE_TABLE_ERROR()</B>
+          Destructor.
+
+
+</PRE>
+<H2>OTHER FUNCTIONS</H2><PRE>
+     <B>u_long</B> <B>calculate_num_entries</B>
+       <B>(const</B> <B>int</B> <B>num_vert,</B> <B>const</B> <B>int</B> <B>num_colors)</B>
+          Calculate the number of table entries for <I>num</I>_<I>vert</I> ver-
+          tices and <I>num</I>_<I>colors</I> possible colors at each vertex.
+
+     <B>void</B> <B>convert2base</B>
+       <B>(const</B> <B>u_long</B> <B>ival,</B> <B>const</B> <B>u_int</B> <B>base,</B> <B>int</B> <B>*</B> <B>digit,</B>
+        <B>const</B> <B>u_int</B> <B>max_num_digits)</B>
+          Convert <I>ival</I> to base <I>base</I> number storing the <I>i</I>'th digit
+          in <I>digit</I>[<I>i</I>].
+
+     <B>void</B> <B>generate_prism</B>
+       <B>(const</B> <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>base_polyhedron,</B>
+        <B>ISOSURFACE_TABLE_POLYHEDRON</B> <B>&amp;</B> <B>prism)</B>
+          Generate  prism  polyhedron   over   the   given   base
+          polyhedron.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>ijkgentable(1),</B> <B>ijkgenpatch(3),</B> <B>xit(5).</B>
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+     Praveen Bhaniramka, Rephael Wenger
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>

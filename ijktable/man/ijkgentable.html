@@ -1,0 +1,131 @@
+<HTML>
+<BODY>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+</PRE>
+<H2>NAME</H2><PRE>
+     ijkgentable - generate isosurface table
+
+
+</PRE>
+<H2>SYNOPSIS</H2><PRE>
+     <B>ijkgentable</B>   [-d   <I>dimension</I>]   [-ivol]    [-nep]    [-poly
+     {<I>cube</I>|<I>pyramid</I>|<I>simplex</I>|<I>sprism</I>}] [-o {<I>output</I>_<I>filename</I>}] [-hqv]
+     [-V &lt;n&gt;]
+
+
+</PRE>
+<H2>DESCRIPTION</H2><PRE>
+     <B>ijkgentable</B> is a program to generate a table  of  isosurface
+     patches  for  cubes  or  simplices  in arbitrary dimensions.
+     Isosurface patches for each of the 2^numv  +/-  vertex  sign
+     patterns are stored in the table where numv is the number of
+     polyhedron vertices.
+
+
+</PRE>
+<H2>OPTIONS</H2><PRE>
+     -<B>d</B> <I>dimension</I>
+          Set dimension to <I>dimension</I>.
+
+     <B>-ivol</B>
+          Compute the interval volume.
+
+     <B>-nep</B> Use an isosurface table with  negative,  equals  (zero)
+          and  positive  vertex labels.  The equals vertex labels
+          represents vertices whose scalar value equals the  iso-
+          value.
+
+     -<B>poly</B>{<I>cube</I>|<I>pyramid</I>|<I>simplex</I>|<I>sprism</I>}
+          Set polyhedron to cube (hypercube,) pyramid, simplex or
+          prism with simplex base.  Default is cube.
+
+     -<B>h</B>   Print help message (and exit.)
+
+     -<B>q</B>   Quiet mode.  Suppress messages.
+
+     -<B>v</B>   Verbose mode.  Print messages.
+
+     -<B>V</B> &lt;<I>n</I>&gt;
+          Verbose mode.  Print  message  after  every  &lt;<I>n</I>&gt;  table
+          entries.
+
+
+</PRE>
+<H2>NOTES</H2><PRE>
+     Tables for hypercubes of dimension five or higher would have
+     2^32  or  more  entries and cannot be generated.  Tables for
+     pyramids of dimension six or higher  would  have  2^32+1  or
+     more  entries and cannot be generated.  Tables for simplices
+     can be generated up to approximately dimension 20  depending
+     on your processor speed and memory.  Interval volumes cannot
+     be generated with the -nep flag.
+
+
+</PRE>
+<H2>SEE ALSO</H2><PRE>
+     <B>ijkgenpatch,</B><B>ijktable(3)</B>,<B>xit(5).</B>
+
+
+</PRE>
+<H2>AUTHOR</H2><PRE>
+     Praveen Bhaniramka, Sundaresan Raman, Rephael Wenger
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+<HR>
+<ADDRESS>
+Man(1) output converted with
+<a href="http://www.oac.uci.edu/indiv/ehood/man2html.html">man2html</a>
+</ADDRESS>
+</BODY>
+</HTML>
