@@ -28,6 +28,8 @@
 
 #include "expat.h"
 
+#include <string.h>
+
 #include "ijkxitIO.h"
 
 using namespace std;

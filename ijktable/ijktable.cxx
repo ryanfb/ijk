@@ -30,6 +30,7 @@
 
 #include <set>
 #include <vector>
+#include <algorithm>
 
 #include "ijktable.h"
 
